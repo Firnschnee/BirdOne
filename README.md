@@ -17,6 +17,17 @@ row, global search hidden (use CTRL+K).
 - Auto-hide aware: if `mail.tabs.autoHide` is enabled and only one tab
   is open, the toolbar keeps its full width instead of leaving an empty
   gap
+- Fixed amber accent (`#fabd2f`) decoupled from the Windows accent
+  colour – selection highlights, primary button and focus rings stay
+  amber regardless of the OS setting
+- Colour as signal (dark mode): context menus, app menu, toolbar
+  icons, column headers, recipient pills and compose-window controls
+  answer hover with amber text/icons instead of a background block
+- Selection surfaces (dark mode): message list selection, the "New
+  Message" button and the header/compose toolbar buttons use a subtle
+  amber tint with a 1px amber outline instead of a solid amber block
+- Square popup corners: no rounded inner corners in context menus and
+  panels
 
 ### Installation
 
@@ -48,6 +59,8 @@ All knobs live at the top of `userChrome.css`:
 | `--birdone-tab-share` | `55%` | Share of the row given to the tabs |
 | `--birdone-row-height` | `34px` | Height of the combined row |
 | `--birdone-tab-inset` | `42px` | Left offset of the tabs (keeps the spaces button clear) |
+| `--birdone-accent` | `#fabd2f` | Accent colour replacing the Windows accent |
+| `--birdone-accent-text` | `#1a1a1a` | Text on accent surfaces (e.g. the "New Message" button) |
 
 The responsive breakpoint (850px) is hard-coded because media queries
 can't read CSS variables. To change it, adjust both `@media (min-width: 850px)`

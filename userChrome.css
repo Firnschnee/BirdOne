@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  BirdOne 1.0 – A one-line layout for Thunderbird
+  BirdOne 1.1 – A one-line layout for Thunderbird
   https://github.com/Firnschnee/BirdOne
   Concept inspired by NeroWolfe_'s one-line experiment
   Tested: Thunderbird 152 (Supernova UI, 115+)
@@ -15,6 +15,9 @@
   --birdone-tab-share: 55%;    /* Anteil der Zeile fuer die Tabs */
   --birdone-row-height: 34px;  /* Hoehe der kombinierten Zeile */
   --birdone-tab-inset: 42px;   /* Abstand der Tabs vom linken Rand (Platz fuer den Spaces-Button) */
+
+  --birdone-accent: #fabd2f;      /* Akzentfarbe - ersetzt die Windows-Akzentfarbe (Block 4-6) */
+  --birdone-accent-text: #1a1a1a; /* Text auf Akzentflaechen (z.B. "Neue Nachricht"-Button) */
 }
 
 /* --------------------------------------------------------------------------
@@ -63,5 +66,269 @@
   #unifiedToolbar {
     background: none !important;
     box-shadow: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4 | Akzentfarbe - von der Windows-Akzentfarbe entkoppelt
+   Thunderbird bezieht seine Akzentfarbe aus den Systemfarben AccentColor/
+   AccentColorText (Windows-Einstellung > Personalisierung > Farben). Die
+   zwei zentralen Tokens werden fest auf Amber gepinnt: --selected-item-color
+   speist Auswahl-Highlights (Ordnerliste, Nachrichtenliste), den
+   Primaerbutton ("Neue Nachricht"), Fokusrahmen und Attention-Icons;
+   --color-accent-primary die Toolkit-Widgets (Checkboxen, Fokus-Outlines).
+   Die Hover/Active-Ableitungen entstehen per color-mix aus der Basis und
+   folgen automatisch.
+   -------------------------------------------------------------------------- */
+:root {
+  --selected-item-color: var(--birdone-accent) !important;
+  --selected-item-text-color: var(--birdone-accent-text) !important;
+  --color-accent-primary: var(--birdone-accent) !important;
+  --color-accent-primary-selected: var(--birdone-accent) !important;
+}
+
+/* Menueleiste (Alt-Taste): der Unterstrich eines geoeffneten Menues malt
+   AccentColor direkt am Token vorbei (toolkit menu.css). */
+menubar > menu[open] {
+  border-bottom-color: var(--birdone-accent) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5 | Kontextmenues - Highlight per Schriftfarbe statt Hintergrundflaeche
+   Toolkit malt den Zeilen-Hover mit der Systemfarbe -moz-menuhover aus
+   einer :where()-Regel (Spezifitaet 0, bewusst ueberschreibbar). Stattdessen
+   transparenter Hintergrund und Amber-Text; Menue-Icons haengen ueber
+   --menuitem-icon-fill an currentColor und faerben mit. Nur im Dark Mode -
+   auf hellen Menues traegt Amber nicht.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  menupopup :is(menuitem, menu)[_moz-menuactive]:not([disabled]) {
+    background-color: transparent !important;
+    color: var(--birdone-accent) !important;
+  }
+  /* Disabled-Zeilen haben in toolkit menu.css einen eigenen Hover-Chip
+     (-moz-menuhoverdisabled); auch den entfernen. */
+  menupopup :is(menuitem, menu)[_moz-menuactive][disabled] {
+    background-color: transparent !important;
+  }
+
+  /* App-Menue (Hamburger) und Panel-Subviews: dritte Hover-Mechanik.
+     Die Zeilen (subviewbuttons, panelUI.css) malen ihren Chip aus der
+     --panel-background-color-dimmed-Familie und setzen color: inherit.
+     Chips ueber die Tokens aus, Amber-Text per eigener Regel; die
+     Checked-Zustaende (z.B. Dichte-Auswahl) laufen ueber
+     --selected-item-color und bleiben als Flaeche erhalten. */
+  panel,
+  menupopup {
+    --panel-background-color-dimmed: transparent !important;
+    --panel-background-color-dimmed-further: transparent !important;
+    --panel-background-color-dimmed-even-further: transparent !important;
+  }
+  panelview .toolbarbutton-1:not([disabled]):is(:hover, :focus-visible, [open], :active),
+  toolbarbutton.subviewbutton:not([disabled]):is(:hover, :focus-visible, [open], :active),
+  panelview .toolbaritem-combined-buttons > toolbarbutton:not([disabled]):is(:hover, :focus-visible, [open], :active),
+  :is(menu, menuitem).subviewbutton:not([disabled])[_moz-menuactive] {
+    color: var(--birdone-accent) !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Innenradien: --menuitem-border-radius (Default --border-radius-xsmall)
+   rundet den Hover-Chip der Zeilen; --panel-border-radius (messenger
+   variables.css: 8px) rundet den Inhaltskasten des Popups, waehrend das
+   Popup-Fenster dahinter eckig bleibt - in der Ecke schaut sonst der graue
+   Fensterhintergrund als Dreieck durch. Beide Radien unabhaengig vom
+   Farbschema auf eckig. */
+menupopup,
+panel {
+  --menuitem-border-radius: 0 !important;
+  --panel-border-radius: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   6 | Toolbar-Icons - Hover-Feedback per Farbe statt Flaeche
+   Die Buttons der Unified Toolbar (messenger widgets.css) malen bei Hover
+   einen currentColor-Chip (--toolbar-button-hover-background-color) plus
+   Rahmen. Beides raus; stattdessen setzt --button-hover-text-color den
+   Text auf Amber, und weil die Icons mit fill/stroke: currentColor
+   gezeichnet werden, faerben sie mit. Auf die Toolbar-Klassen gescoped,
+   damit normale Dialog-Buttons ihr natives Hover behalten.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  .button:is(.toolbar-button, .unified-toolbar-button) {
+    --toolbar-button-hover-background-color: transparent !important;
+    --toolbar-button-hover-border-color: transparent !important;
+    --toolbar-button-active-background-color: transparent !important;
+    --toolbar-button-active-border-color: transparent !important;
+    --toolbar-button-hover-checked-color: transparent !important;
+    --button-hover-text-color: var(--birdone-accent) !important;
+  }
+
+  /* Flat-Buttons (Ordnerbereich "Nachrichten abrufen", Nachrichtenlisten-
+     Optionen u.a.): deren Hover-Chip ist hart kodiertes color-mix ohne
+     Token, daher direkte Regel statt Variablen-Override. Icon folgt via
+     fill/stroke: currentColor der Textfarbe. */
+  .button.button-flat:hover,
+  .button.button-flat:hover:active {
+    background-color: transparent !important;
+    color: var(--birdone-accent) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7 | "Neue Nachricht"-Button - Posteingang-Look statt voller Amber-Flaeche
+   Der Primaerbutton im Ordnerbereich uebernimmt die Optik der selektierten
+   Ordnerzeile: 1px Amber-Rahmen, dunkler Hintergrund mit Amber-Anteil,
+   helle Schrift. Die Abstufungen fuer Hover/Active ersetzen die nativen
+   color-mix-Ableitungen aus der Primaerfarbe. Bewusst nur dieser eine
+   Button - Primaerbuttons in Dialogen behalten die volle Amber-Flaeche.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #folderPaneWriteMessage {
+    background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
+    border: 1px solid var(--birdone-accent) !important;
+    color: var(--layout-color-1) !important;
+    box-shadow: none !important;
+  }
+  #folderPaneWriteMessage:enabled:hover {
+    background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    border-color: var(--birdone-accent) !important;
+    box-shadow: none !important;
+  }
+  #folderPaneWriteMessage:enabled:hover:active {
+    background-color: color-mix(in srgb, var(--birdone-accent) 35%, transparent) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8 | Nachrichtenliste - Auswahlbalken im Posteingang-Look
+   Die fokussierte selektierte Zeile malt --listbox-focused-selected-bg
+   (= --selected-item-color, seit Block 4 voll Amber) mit dunkler Schrift.
+   Stattdessen wie Block 7: Amber-Toenung, 1px Amber-Outline, helle Schrift.
+   Auf den Tabellen-Body der Nachrichtenliste gescoped; Ordnerliste und
+   nicht fokussierte Auswahl (graue Zeile) bleiben nativ.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  /* Getaggte Nachrichten ausgenommen: deren Auswahlbalken traegt die
+     Tag-Farbe (threadPane.css) und behaelt sie. */
+  [is="tree-view-table-body"]:is(:focus, :focus-within) > .table-layout.selected:not([data-properties~="tagged"]),
+  [is="tree-view-table-body"] > .table-layout.selected:not([data-properties~="tagged"]):focus-within {
+    background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
+    color: var(--tree-view-color) !important;
+    outline: 1px solid var(--birdone-accent) !important;
+    outline-offset: -1px !important;
+  }
+
+  /* Spaltenkoepfe (Betreff, Von, Datum, ... samt Icon-Spalten und
+     Spaltenwaehler): Hover als Farbsignal statt des grauen Chips aus
+     --tree-view-header-hover-bg. Die Icon-Spalten haengen ueber ihre
+     currentColor-Mischungen mit dran und toenen amber. */
+  .tree-table-cell-container button:hover,
+  .tree-table-cell-container button:hover:active {
+    background-color: transparent !important;
+    color: var(--birdone-accent) !important;
+  }
+
+  /* Kennzeichnungs-Stern in der Zeile und im Spaltenkopf: Hover amber,
+     analog zum Stern im Nachrichten-Header (Block 9). Gesetzte Sterne
+     (flagged) behalten ihr natives Orange. */
+  tr:not([data-properties~="flagged"]) .tree-view-row-flag .tree-button-flag:hover > img,
+  #flaggedColButton:hover img {
+    fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
+    stroke: var(--birdone-accent) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9 | Nachrichten-Header & Verfassen-Toolbar
+   Von/An-Pills: Hover als reines Farbsignal - kein Hintergrund, Amber-
+   Schrift; das Adressbuch-Icon behaelt sein Amber. Aktionsbuttons
+   (Antworten, Weiterleiten, ... sowie Senden, Verschluesselung, S/MIME
+   im Verfassen-Fenster): Hover/Offen im Look der Listen-Auswahl aus
+   Block 8 - Amber-Toenung plus Amber-Rahmen - ueber die gescopte
+   --toolbarbutton-Tokenfamilie (messenger.css), die auch die
+   zweiteiligen Menu-Buttons ("Mehr", "S/MIME") abdeckt. Ruhezustand nativ.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  .header-recipient:hover,
+  .header-newsgroup:hover {
+    background-color: transparent !important;
+    color: var(--birdone-accent) !important;
+  }
+  .header-recipient:hover .recipient-address-book-button.in-address-book img {
+    fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
+    stroke: var(--birdone-accent) !important;
+  }
+
+  /* Kennzeichnungs-Stern: Hover amber statt heller currentColor-Umriss.
+     Der gesetzte Zustand (.flagged) behaelt sein natives Orange. */
+  button.email-action-flagged:not(.flagged):hover {
+    fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
+    stroke: var(--birdone-accent) !important;
+  }
+
+  .toolbarbutton-1.message-header-view-button,
+  #composeToolbar2 .toolbarbutton-1 {
+    --toolbarbutton-background-color-hover: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
+    --toolbarbutton-checked-background: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    --toolbarbutton-background-color-active: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    --toolbarbutton-hover-bordercolor: var(--birdone-accent) !important;
+    --toolbarbutton-active-bordercolor: var(--birdone-accent) !important;
+    --toolbarbutton-hover-boxshadow: none !important;
+    --toolbarbutton-active-boxshadow: none !important;
+  }
+
+  /* Von-Auswahl (Identitaet) im Verfassen-Fenster: Hover im Listen-Look,
+     Amber-Rahmen plus Toenung statt grauem Rahmen auf Field-Hintergrund.
+     Der Fokus-/Offen-Zustand nutzt --toolbar-field-focus-border-color
+     (= Amber seit Block 4) und bleibt nativ. */
+  #msgIdentity:not([disabled]):hover {
+    border-color: var(--birdone-accent) !important;
+    background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
+  }
+
+  /* Kopie (CC) / Blindkopie (BCC): reines Farbsignal - kein Hover-Chip
+     der generischen button-Regel, Amber-Schrift. */
+  button.recipient-button:not([disabled]):hover,
+  button.recipient-button:not([disabled]):hover:active {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: var(--birdone-accent) !important;
+  }
+
+  /* Doppelpfeil "weitere Adressfelder" und Rechtschreibsprache in der
+     Statusleiste: gleiche plain-button-Mechanik, gleiches Farbsignal.
+     Der aria-expanded-Zustand ist einbezogen, damit beim geoeffneten
+     Popup nicht der graue Chip zurueckkommt. */
+  button#extraAddressRowsMenuButton:not([disabled]):is(:hover, [aria-expanded="true"]),
+  button#languageStatusButton:not([disabled]):is(:hover, [aria-expanded="true"]) {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: var(--birdone-accent) !important;
+    box-shadow: none !important;
+  }
+
+  /* Formatierungsleiste: die Buttons (B, I, U, Listen, ...) lesen dieselbe
+     --toolbarbutton-Tokenfamilie wie oben. */
+  #FormatToolbar toolbarbutton.formatting-button {
+    --toolbarbutton-background-color-hover: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
+    --toolbarbutton-checked-background: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    --toolbarbutton-background-color-active: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    --toolbarbutton-hover-bordercolor: var(--birdone-accent) !important;
+    --toolbarbutton-active-bordercolor: var(--birdone-accent) !important;
+    --toolbarbutton-hover-boxshadow: none !important;
+    --toolbarbutton-active-boxshadow: none !important;
+  }
+
+  /* Die Dropdowns (Absatzformat, Schriftart) nutzen dieselben Tokens schon
+     im RUHEzustand als Grundflaeche - Token-Override wuerde sie dauerhaft
+     einfaerben. Daher direkte Regeln nur fuer Hover und Offen. */
+  #FormatToolbar menulist:not([disabled], [open="true"]):hover {
+    background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
+    border-color: var(--birdone-accent) !important;
+  }
+  #FormatToolbar menulist[open="true"] {
+    background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    border-color: var(--birdone-accent) !important;
   }
 }
