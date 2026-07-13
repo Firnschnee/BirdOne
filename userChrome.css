@@ -4,7 +4,47 @@
    Tested: Thunderbird 152 (Supernova UI, 115+)
    ========================================================================== */
 
-/* SMOKE TEST - wird in Task 3 entfernt */
-#tabs-toolbar {
-  background: #b16286 !important;
+/* --------------------------------------------------------------------------
+   1 | Variablen
+   -------------------------------------------------------------------------- */
+:root {
+  --birdone-tab-share: 55%;    /* Anteil der Zeile fuer die Tabs */
+  --birdone-row-height: 34px;  /* Hoehe der kombinierten Zeile */
+  --birdone-tab-inset: 30px;   /* Abstand der Tabs vom linken Rand */
+}
+
+/* --------------------------------------------------------------------------
+   2 | One-Line-Mechanik
+   Breakpoint hart kodiert: unter 850px normales zweizeiliges Layout.
+   Zum Aendern beide @media-Werte (hier und in Block 3) anpassen.
+   Greift nur, wenn die Tab-Leiste sichtbar ist - bei mail.tabs.autoHide
+   und nur einem Tab kollabiert #tabs-toolbar, dann bleibt die Toolbar
+   in voller Breite.
+   -------------------------------------------------------------------------- */
+@media (min-width: 850px) {
+  /* Suchfeld weg - Suche via STRG+K */
+  #unifiedToolbarContent li[item-id="search-bar"] {
+    display: none !important;
+  }
+
+  /* Tab-Leiste in die Unified-Toolbar-Zeile hochziehen, linke Haelfte */
+  #titlebar:has(> #tabs-toolbar:not([collapsed="true"])) #tabs-toolbar {
+    margin-top: calc(-1 * var(--birdone-row-height)) !important;
+    height: var(--birdone-row-height) !important;
+    margin-inline-start: var(--birdone-tab-inset) !important;
+    margin-inline-end: calc(100% - var(--birdone-tab-share)) !important;
+  }
+
+  /* Toolbar-Zeile auf gemeinsame Hoehe bringen */
+  #unifiedToolbar {
+    height: var(--birdone-row-height) !important;
+    padding-block: 0 !important;
+  }
+
+  /* Toolbar-Inhalt nach rechts einruecken, Platz fuer die Tabs */
+  #titlebar:has(> #tabs-toolbar:not([collapsed="true"])) #unifiedToolbarContent {
+    margin-inline-start: var(--birdone-tab-share) !important;
+    flex: auto !important;
+    min-width: 0 !important;
+  }
 }
