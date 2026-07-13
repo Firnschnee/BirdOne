@@ -34,6 +34,7 @@ row, global search hidden (use CTRL+K).
 ### Customisation
 >BirdOne is configurable through CSS variables. See all options → [docs/customisation.md](docs/customisation.md)
 
+### Firefox? 
+> You are looking for [FoxOne!](https://github.com/Firnschnee/FoxOne)
 ---
-Sibling of [FoxOne](https://github.com/Firnschnee/FoxOne) |
 Concept inspired by [NeroWolfe_'s one-line experiment](https://www.reddit.com/r/Thunderbird/comments/15klzpr/oneliner_for_thunderbird/) | License: [MIT](LICENSE)
