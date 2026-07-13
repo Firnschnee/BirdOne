@@ -1,0 +1,7 @@
+# local working notes, not part of the published skin
+docs/
+
+# OS cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
