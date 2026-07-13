@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  BirdOne 1.1 – A one-line layout for Thunderbird
+  BirdOne 1.1.1 – A one-line layout for Thunderbird
   https://github.com/Firnschnee/BirdOne
   Concept inspired by NeroWolfe_'s one-line experiment
   Tested: Thunderbird 152 (Supernova UI, 115+)
@@ -176,27 +176,28 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   7 | "Neue Nachricht"-Button - Posteingang-Look statt voller Amber-Flaeche
-   Der Primaerbutton im Ordnerbereich uebernimmt die Optik der selektierten
-   Ordnerzeile: 1px Amber-Rahmen, dunkler Hintergrund mit Amber-Anteil,
-   helle Schrift. Die Abstufungen fuer Hover/Active ersetzen die nativen
-   color-mix-Ableitungen aus der Primaerfarbe. Bewusst nur dieser eine
-   Button - Primaerbuttons in Dialogen behalten die volle Amber-Flaeche.
+   7 | "Neue Nachricht"-Button - grau in Ruhe, Amber-Look bei Hover
+   Ruhezustand: die Optik eines normalen Buttons statt der vollen
+   Amber-Flaeche des Primaerbuttons - graue Flaeche, hellerer grauer
+   Rahmen, helle Schrift (die nativen Button-Tokens). Hover/Active:
+   der 1.1-Look aus Block 8/9, Amber-Toenung plus Amber-Rahmen.
+   Bewusst nur dieser eine Button - Primaerbuttons in Dialogen behalten
+   die volle Amber-Flaeche.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #folderPaneWriteMessage {
-    background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
-    border: 1px solid var(--birdone-accent) !important;
-    color: var(--layout-color-1) !important;
+    background-color: var(--button-background-color) !important;
+    border: 1px solid var(--button-border-color) !important;
+    color: var(--button-text-color) !important;
     box-shadow: none !important;
   }
   #folderPaneWriteMessage:enabled:hover {
-    background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
+    background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
     border-color: var(--birdone-accent) !important;
     box-shadow: none !important;
   }
   #folderPaneWriteMessage:enabled:hover:active {
-    background-color: color-mix(in srgb, var(--birdone-accent) 35%, transparent) !important;
+    background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
   }
 }
 
