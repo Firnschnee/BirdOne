@@ -1,0 +1,10 @@
+/* ==========================================================================
+   BirdOne - one-line layout for Thunderbird
+   https://github.com/Firnschnee/BirdOne
+   Tested: Thunderbird 152 (Supernova UI, 115+)
+   ========================================================================== */
+
+/* SMOKE TEST - wird in Task 3 entfernt */
+#tabs-toolbar {
+  background: #b16286 !important;
+}
