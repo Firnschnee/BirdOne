@@ -10,7 +10,7 @@
 :root {
   --birdone-tab-share: 55%;    /* Anteil der Zeile fuer die Tabs */
   --birdone-row-height: 34px;  /* Hoehe der kombinierten Zeile */
-  --birdone-tab-inset: 30px;   /* Abstand der Tabs vom linken Rand */
+  --birdone-tab-inset: 42px;   /* Abstand der Tabs vom linken Rand (Platz fuer den Spaces-Button) */
 }
 
 /* --------------------------------------------------------------------------
@@ -46,5 +46,18 @@
     margin-inline-start: var(--birdone-tab-share) !important;
     flex: auto !important;
     min-width: 0 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3 | Zeilenumfeld
+   Breakpoint muss dem Wert in Block 2 entsprechen.
+   -------------------------------------------------------------------------- */
+@media (min-width: 850px) {
+  /* Eine Flaeche statt zwei Leisten */
+  #tabs-toolbar,
+  #unifiedToolbar {
+    background: none !important;
+    box-shadow: none !important;
   }
 }
