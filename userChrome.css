@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  BirdOne 1.1.1 – A one-line layout for Thunderbird
+  BirdOne 1.2 – A one-line layout for Thunderbird
   https://github.com/Firnschnee/BirdOne
   Concept inspired by NeroWolfe_'s one-line experiment
   Tested: Thunderbird 152 (Supernova UI, 115+)
@@ -331,5 +331,27 @@ panel {
   #FormatToolbar menulist[open="true"] {
     background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
     border-color: var(--birdone-accent) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10 | Fensterknoepfe (Minimieren/Maximieren/Schliessen)
+   Thunderbird malt die Knoepfe selbst (messenger.css): Hover ist ein
+   grauer Block, Schliessen ein roter. Stattdessen das BirdOne-Muster -
+   kein Block, die Glyphe selbst nimmt die Farbe. Minimieren/Maximieren
+   hovern amber; Schliessen hovert im Windows-Schliessrot, Konvention
+   schlaegt Theme. Die Glyphen sind Segoe-Fluent-Schriftzeichen (::before,
+   content), keine SVGs - color genuegt, kein fill/stroke-Binding noetig.
+   Gilt fuer alle Chrome-Fenster (Hauptfenster, Verfassen, ...).
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  .titlebar-button:hover,
+  .titlebar-button:hover:active {
+    background-color: transparent !important;
+    color: var(--birdone-accent) !important;
+  }
+  .titlebar-close:hover,
+  .titlebar-close:hover:active {
+    color: #e81123 !important; /* Windows-Schliessrot - BirdOne hat kein Rot-Token */
   }
 }

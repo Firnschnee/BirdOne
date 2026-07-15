@@ -15,6 +15,7 @@ row, global search hidden (use CTRL+K).
 >- Colour as signal (dark mode): context menus, app menu, toolbar icons, column headers, recipient pills and compose-window controls answer hover with amber text/icons instead of a background block.
 >- Message list selection, the "New Message" button and the header/compose toolbar buttons use a subtle amber tint with a 1px amber outline instead of a solid amber block
 >- Square popup corners: no rounded inner corners in context menus and panels
+>- Window controls (dark mode): minimize/maximize hover in amber glyph colour instead of a grey block; close keeps the Windows close-red, as glyph colour instead of a red block
 
 ### Installation
 >
