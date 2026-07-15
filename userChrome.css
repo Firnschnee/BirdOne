@@ -371,3 +371,17 @@ panel {
     --tree-pane-background: var(--layout-background-1) !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   12 | Separatorlinie unter der Titelzeile
+   Die Linie existiert nativ (unified-toolbar, border-block-end 1px), ist
+   aber rgba(0,0,0,0.15) - im Dark Mode unsichtbar. Umgefaerbt auf
+   --sidebar-border, dasselbe Token wie die Pane-Splitter darunter; nur
+   die Farbe, keine neue Geometrie. Der aktive Tab nimmt sich selbst aus:
+   die hochgezogene Tab-Leiste ueberlappt die Borderzone um 1px, die opake
+   Flaeche des aktiven Tabs (.tab-background) deckt die Linie dort ab -
+   Browser-Verhalten, Tab und Inhalt bleiben verbunden.
+   -------------------------------------------------------------------------- */
+unified-toolbar {
+  border-block-end-color: var(--sidebar-border) !important;
+}
