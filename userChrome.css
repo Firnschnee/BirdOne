@@ -355,3 +355,19 @@ panel {
     color: #e81123 !important; /* Windows-Schliessrot - BirdOne hat kein Rot-Token */
   }
 }
+
+/* --------------------------------------------------------------------------
+   11 | Nachrichtenliste - grau statt schwarz
+   Die Nachrichtenliste malt ihren Hintergrund aus --tree-view-bg, im Dark
+   Mode pures Schwarz (--color-black, tree-listbox.css) - Ordner- und
+   Nachrichtenbereich daneben liegen auf --layout-background-1 (#27272a).
+   Token auf dasselbe Grau pinnen; die abgeleiteten Hover/Auswahl-Mischungen
+   (color-mix ueber --tree-view-bg) folgen automatisch. --tree-pane-background
+   ist das Pendant der Kartenansicht und zieht mit.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tree-view-bg: var(--layout-background-1) !important;
+    --tree-pane-background: var(--layout-background-1) !important;
+  }
+}
