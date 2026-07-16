@@ -5,7 +5,6 @@ row, global search hidden (use CTRL+K).
 
 > Tested on Thunderbird 152 (Supernova UI, 115+ required) on Windows.
 
-![preview](assets/preview.png)
 
 ### Features
 
