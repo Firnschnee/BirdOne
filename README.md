@@ -16,10 +16,11 @@ row, global search hidden (use CTRL+K).
 >- Message list selection, the "New Message" button and the header/compose toolbar buttons use a subtle amber tint with a 1px amber outline instead of a solid amber block
 >- Square popup corners: no rounded inner corners in context menus and panels
 >- Window controls (dark mode): minimize/maximize hover in amber glyph colour instead of a grey block; close keeps the Windows close-red, as glyph colour instead of a red block
+>- One surface grey (dark mode): folder pane, message list, reading pane and the dark-reader mail body share a single grey (`#282828`, `--birdone-surface`) instead of the mixed near-black defaults
 
 ### Installation
 >
->1. Download [`userChrome.css`](https://github.com/Firnschnee/BirdOne/blob/main/userChrome.css)
+>1. Download [`userChrome.css`](https://github.com/Firnschnee/BirdOne/blob/main/userChrome.css) and [`userContent.css`](https://github.com/Firnschnee/BirdOne/blob/main/userContent.css)
 >
 >2. In Thunderbird go to **Settings → General**, scroll to the bottom and open **Config Editor**. Search for
    **`toolkit.legacyUserProfileCustomizations.stylesheets`** and set it to **`true`**.
@@ -28,7 +29,7 @@ row, global search hidden (use CTRL+K).
 >
 >4. Find your profile folder: **Help → Troubleshooting Information → Profile Folder → Open Folder**.
 >
->5. Create a `chrome` folder inside the profile folder if it doesn't exist, then copy `userChrome.css` into it.
+>5. Create a `chrome` folder inside the profile folder if it doesn't exist, then copy `userChrome.css` and `userContent.css` into it.
 >
 >6. Restart Thunderbird. The layout applies on restart.
 

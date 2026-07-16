@@ -1,0 +1,27 @@
+/*==============================================================================================*
+
+  BirdOne 1.3 – Begleitblatt fuer Nachrichteninhalt
+  https://github.com/Firnschnee/BirdOne
+  Faerbt den Mail-Body (Content-Dokument), den userChrome.css nicht erreicht.
+  Tested: Thunderbird 152 (Supernova UI, 115+)
+  MIT License
+
+*==============================================================================================*/
+
+/* --------------------------------------------------------------------------
+   Lesebereich - Dark-Reader-Hintergrund
+   Bei aktivem mail.dark-reader.enabled faerbt Thunderbird den geoeffneten
+   Mail-Body im Dark Mode selbst um: messageBody.css setzt den html-Hintergrund
+   auf --color-gray-90 (#18181b), spuerbar dunkler als die Panes daneben. Das
+   Token nur fuers Content-Dokument auf #282828 umlegen; die Header-Teile
+   (--color-gray-70/-80) bleiben unberuehrt. userContent ist User-Origin, das
+   !important schlaegt den eingespeisten Author-Wert ohne Spezifitaetsakrobatik.
+   Ergaenzt Block 13/14 in userChrome.css (gleicher Wert wie --birdone-surface;
+   Content-Dokumente sehen die Chrome-Variable nicht, daher hier als Hex -
+   beim Anpassen beide Stellen aendern).
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-90: #282828 !important;
+  }
+}
