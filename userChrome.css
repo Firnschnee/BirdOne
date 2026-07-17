@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  BirdOne 1.3 – A one-line layout for Thunderbird
+  BirdOne 1.4 – A one-line layout for Thunderbird
   https://github.com/Firnschnee/BirdOne
   Concept inspired by NeroWolfe_'s one-line experiment
   Tested: Thunderbird 152 (Supernova UI, 115+)
@@ -19,6 +19,8 @@
   --birdone-accent: #fabd2f;      /* Akzentfarbe - ersetzt die Windows-Akzentfarbe (Block 4-6) */
   --birdone-accent-text: #1a1a1a; /* Text auf Akzentflaechen (z.B. "Neue Nachricht"-Button) */
   --birdone-surface: #282828;     /* Flaechengrau der Panes im Dark Mode (Block 13-14; userContent.css separat) */
+  --birdone-titlebar: #1f1f1f;    /* Titel-/Tab-Zeile des Hauptfensters im Dark Mode (Block 18) */
+  --birdone-menu: #222222;        /* App-Menue-Flaeche im Dark Mode, angelehnt an die Windows-Menuefarbe (Block 19) */
 }
 
 /* --------------------------------------------------------------------------
@@ -419,5 +421,122 @@ unified-toolbar {
 @media (prefers-color-scheme: dark) {
   :root {
     --layout-background-1: var(--birdone-surface) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15 | Verfassen-Fenster - Adress- und Betreff-Felder auf Flaechengrau
+   Die Eingabefelder (An/Kopie/Blindkopie: .address-container, Betreff:
+   #msgSubject) malen ihren Hintergrund je nach Theme-Zustand aus zwei
+   Quellen (messengercompose.css): unter :root[lwt-tree] aus
+   --toolbar-field-background-color, sonst aus der Systemfarbe Field - im
+   Dark Mode nahezu schwarz. Ein Token-Override deckte nur den ersten Pfad
+   ab und blieb wirkungslos; stattdessen die Flaeche direkt am Feld
+   gepinnt, das schlaegt beide Malwege. Nimmt auch den Fokus-Hintergrund
+   mit (nativ je nach Pfad -focus-Token oder Field) - gewollt, eine
+   Flaeche in Ruhe wie im Fokus; der Amber-Fokusrahmen (Block 4) bleibt.
+   Der Editor-Body darunter ist ein Content-Dokument -> userContent.css.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #MsgHeadersToolbar .address-container,
+  #msgSubject {
+    background-color: var(--birdone-surface) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16 | Verfassen-Fenster - Umschlagbereich & Formatierungsleiste
+   Die Flaechen um die Felder herum: der Umschlagbereich (Von/An/Betreff,
+   #MsgHeadersToolbar) und die Formatierungsleiste (#FormatToolbox mit
+   #FormatToolbar darin). messengercompose.css malt beide unter
+   :root[lwt-tree] aus --toolbar-background-color (!important), sonst
+   greift die native Toolbar-Flaeche - wie in Block 15 direkt gepinnt,
+   das schlaegt beide Pfade; userChrome ist User-Origin, das !important
+   gewinnt auch gegen das der Author-Regel. Die Felder aus Block 15
+   liegen tongleich darauf und zeichnen sich nur noch ueber ihren
+   nativen Rahmen ab - gewollt, eine Flaeche im ganzen Fenster.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #MsgHeadersToolbar,
+  #FormatToolbox,
+  #FormatToolbar {
+    background-color: var(--birdone-surface) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17 | System-Prompts (Bestaetigen/Nachfragen) - Flaechengrau statt Blau
+   Die Prompt-Dialoge des Prompt-Service (z.B. "Nachricht im Entwurfsordner
+   speichern?" beim Schliessen des Verfassen-Fensters) sind eigene Chrome-
+   Fenster aus toolkit commonDialog.xhtml. Ihr Hintergrund kommt als
+   Systemfarbe -moz-Dialog vom UA-Sheet am Fensterroot - im Dark Mode ein
+   blaeulich getoentes Dunkelgrau, kein Thunderbird-Token. Direkt am Root
+   gepinnt; bewusst nur auf #commonDialogWindow gescoped (alert/confirm/
+   prompt), andere Dialogfenster bleiben nativ.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #commonDialogWindow {
+    background-color: var(--birdone-surface) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   18 | Titel-/Toolbar-Zeilen - eigener Grauton
+   Hauptfenster: der Streifen hinter Tabs und Toolbar-Zeile ist
+   #navigation-toolbox; messenger.css malt ihn unter :root[lwtheme] aus
+   --lwt-accent-color (Theme-injiziert, nahezu schwarz), Tab-Leiste und
+   Unified Toolbar sind seit Block 3 transparent, die Farbe scheint durch.
+   Verfassen-Fenster: #compose-toolbox nutzt dieselbe Accent-Regel, seine
+   Toolbar-Zeilen (Menueleiste, Senden-Leiste) malen aber zusaetzlich
+   selbst aus --toolbar-background-color (messengercompose.css) und
+   brauchen den Pin einzeln. Direkt gepinnt statt uebers Token - das
+   Token speist auch Statusleiste und Findbar, die bleiben nativ. Deckt
+   den Inaktiv-Zustand ab (--lwt-accent-color-inactive), aktives und
+   inaktives Fenster tragen denselben Ton. Die Seitenleiste der
+   Einstellungen-Seite ist Content -> userContent.css.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #navigation-toolbox,
+  #compose-toolbox,
+  #compose-toolbox > toolbar {
+    background-color: var(--birdone-titlebar) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   19 | App-Menue (Hamburger) - Menuegrau statt Schwarz
+   Die Kontextmenues (menupopup) malen ihre Flaeche aus der Systemfarbe
+   Menu (toolkit popup.css) - das neutrale Dunkelgrau der Windows-Menues.
+   Das App-Menue ist dagegen ein Arrow-Panel, dessen Flaeche ueber
+   --panel-background-color laeuft und im Dark Mode nahezu schwarz
+   ankommt. Beide Token-Namen am Panel gepinnt (toolkit konsumiert je
+   nach Pfad --panel-background-color oder --arrowpanel-background),
+   damit das App-Menue zu den Kontextmenues passt. Wert als eigener
+   Knopf, weil er bewusst neben Surface und Titelzeile liegt.
+   Hinweis Start-Blitz: der blaue Erstpaint des Fensters kommt vom
+   Widget-Code vor jeder CSS-Anwendung - ein Root-Pin aendert daran
+   nichts (getestet), das bleibt.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #appMenu-popup {
+    --panel-background-color: var(--birdone-menu) !important;
+    --arrowpanel-background: var(--birdone-menu) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   20 | Schnellfilter-Suchfeld - Titelzeilen-Grau statt Layout-Schwarz
+   Das Feld "Nachrichten filtern" (#qfb-qs-textbox, about:3pane) ist ein
+   search-bar-Custom-Element; seine Flaeche liest im Shadow DOM
+   --search-bar-background bzw. --search-bar-focus-background, beide
+   zeigen per variables.css auf --layout-background-0 (im Dark Mode
+   #18181b). Beide Tokens am Host gepinnt - Custom Properties erben in
+   den Shadow DOM hinein; Ruhe und Fokus tragen wie nativ denselben Ton,
+   der Amber-Fokusrahmen bleibt.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #qfb-qs-textbox {
+    --search-bar-background: var(--birdone-titlebar) !important;
+    --search-bar-focus-background: var(--birdone-titlebar) !important;
   }
 }

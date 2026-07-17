@@ -1,8 +1,8 @@
 /*==============================================================================================*
 
-  BirdOne 1.3 – Begleitblatt fuer Nachrichteninhalt
+  BirdOne 1.4 – Begleitblatt fuer Nachrichteninhalt
   https://github.com/Firnschnee/BirdOne
-  Faerbt den Mail-Body (Content-Dokument), den userChrome.css nicht erreicht.
+  Faerbt Mail-Body und Compose-Editor (Content-Dokumente), die userChrome.css nicht erreicht.
   Tested: Thunderbird 152 (Supernova UI, 115+)
   MIT License
 
@@ -23,5 +23,106 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-gray-90: #282828 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Verfassen-Fenster - Editor-Hintergrund
+   Der Compose-Editor ist ein eigenes Content-Dokument (about:blank im
+   <editor>-Element); editorContent.css setzt seinen Body im Dark Mode hart
+   auf #2a2a2e - kein Token, daher direkte Regel statt Variablen-Override.
+   Per @-moz-document auf about:blank gescoped, damit Nachrichten und
+   Web-Inhalte unberuehrt bleiben; url-prefix statt url, weil der Editor
+   mit src="about:blank?" laedt (messengercompose.xhtml) und der Exakt-
+   Match das Fragezeichen nicht mitnimmt. Gleicher Wert wie
+   --birdone-surface (Hex aus demselben Grund wie oben; beim Anpassen alle
+   Stellen aendern). Felder darueber (An/Betreff): userChrome.css Block 15.
+   -------------------------------------------------------------------------- */
+@-moz-document url-prefix("about:blank") {
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #282828 !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Einstellungen - Seitenleiste, Suchfeld, Checkboxen
+   Die Kategorienspalte von about:preferences (#pref-category-box) malt
+   aus --sidebar-background, im Dark Mode ein blaeulich getoentes
+   Dunkelgrau - auf das Titelzeilen-Grau gelegt (gleicher Wert wie
+   --birdone-titlebar in userChrome.css). Alle Feld-Wannen der Seite
+   (Textfelder, Listen wie Schlagwoerter und Dateitypen, Trees, Selects)
+   malen aus dem Toolkit-Token --background-color-box - einmal an der
+   Wurzel auf das Flaechengrau gepinnt, alles zieht mit. Die beiden
+   Suchfelder (#searchInput, #filter) sind type="search" und stehen nicht
+   in der Textbox-Regel des Toolkits, daher zusaetzlich direkt gepinnt.
+   Die Checkbox-Kaestchen zeichnet der Widget-Painter (appearance: auto,
+   non-native) an CSS vorbei - daher appearance: none mit eigener Kontur,
+   nur im ungesetzten Zustand: angehakt bleibt der native Painter samt
+   Akzentfuellung und Haken. Die Seite laeuft als Content-Dokument im
+   Tab, daher hier statt in userChrome.css; Hex aus demselben Grund wie
+   oben, beim Anpassen die jeweiligen Stellen mit aendern.
+   -------------------------------------------------------------------------- */
+@-moz-document url-prefix("about:preferences") {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color-box: #282828 !important;
+    }
+
+    #pref-category-box {
+      background-color: #1f1f1f !important;
+    }
+
+    #searchInput,
+    #filter {
+      background-color: #282828 !important;
+    }
+
+    .checkbox-check:not([checked]),
+    input[type="checkbox"]:not(:checked) {
+      appearance: none !important;
+      background-color: #282828 !important;
+      border: 1px solid var(--border-color-interactive, #8f8f9d) !important;
+      border-radius: 2px !important;
+    }
+
+    /* Ansicht-/Gruppierungs-Kacheln (Erscheinungsbild): Kachelflaeche,
+       Bildplatte und Hover malen aus den blaeulichen surface-Tokens
+       (--color-surface-subtle/-base/-border, preferences.css). Kachel auf
+       Flaechengrau, Platte auf Titelzeilen-Grau - gleiche Hierarchie wie
+       Panes auf Titelzeile im Hauptfenster; Hover als neutrale Aufhellung
+       (#2e2e2e, kein BirdOne-Token). Rahmen neutralgrau, per :not vom
+       Auswahlzustand ferngehalten - der bleibt amber. */
+    .appearance-options radio {
+      background-color: #282828 !important;
+    }
+    .appearance-options radio:not([selected="true"]) {
+      border-color: #3f3f3f !important;
+    }
+    .appearance-options radio:hover {
+      background-color: #2e2e2e !important;
+    }
+    .appearance-options .radio-icon {
+      background-color: #1f1f1f !important;
+    }
+
+    /* Dropdowns: XUL-Menulists (z.B. Standardsortierung) malen ihre
+       Popup-Flaeche aus --panel-background-color, das messenger
+       variables.css an :is(menupopup, panel) auf das blaeuliche
+       --color-surface-subtle legt - am Popup selbst neu deklariert.
+       HTML-Selects (z.B. Sprache, Schriftart) rendern ihr Popup im
+       Parent-Prozess aus den berechneten Farben der option-Elemente -
+       daher dort direkt; :not(:checked) laesst der aktiven Zeile ihr
+       Akzent-Highlight. */
+    menupopup,
+    panel {
+      --panel-background-color: #282828 !important;
+      --panel-border-color: #3f3f3f !important;
+    }
+    select,
+    option:not(:checked) {
+      background-color: #282828 !important;
+    }
   }
 }
