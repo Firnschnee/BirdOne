@@ -9,35 +9,35 @@
 *==============================================================================================*/
 
 /* --------------------------------------------------------------------------
-   1 | Variablen
+   1 | Variables
    -------------------------------------------------------------------------- */
 :root {
-  --birdone-tab-share: 55%;    /* Anteil der Zeile fuer die Tabs */
-  --birdone-row-height: 34px;  /* Hoehe der kombinierten Zeile */
-  --birdone-tab-inset: 42px;   /* Abstand der Tabs vom linken Rand (Platz fuer den Spaces-Button) */
+  --birdone-tab-share: 55%;    /* Share of the row used by the tabs */
+  --birdone-row-height: 34px;  /* Height of the combined row */
+  --birdone-tab-inset: 42px;   /* Tab offset from the left edge (room for the Spaces button) */
 
-  --birdone-accent: #fabd2f;      /* Akzentfarbe - ersetzt die Windows-Akzentfarbe (Block 4-6) */
-  --birdone-accent-text: #1a1a1a; /* Text auf Akzentflaechen (z.B. "Neue Nachricht"-Button) */
-  --birdone-surface: #282828;     /* Flaechengrau der Panes im Dark Mode (Block 13-14; userContent.css separat) */
-  --birdone-titlebar: #1f1f1f;    /* Titel-/Tab-Zeile des Hauptfensters im Dark Mode (Block 18) */
-  --birdone-menu: #222222;        /* App-Menue-Flaeche im Dark Mode, angelehnt an die Windows-Menuefarbe (Block 19) */
+  --birdone-accent: #fabd2f;      /* Accent color - replaces the Windows accent color (blocks 4-6) */
+  --birdone-accent-text: #1a1a1a; /* Text on accent surfaces (e.g. the "New Message" button) */
+  --birdone-surface: #282828;     /* Surface grey of the panes in dark mode (blocks 13-14; userContent.css separately) */
+  --birdone-titlebar: #1f1f1f;    /* Title/tab row of the main window in dark mode (block 18) */
+  --birdone-menu: #222222;        /* App menu surface in dark mode, modeled on the Windows menu color (block 19) */
 }
 
 /* --------------------------------------------------------------------------
-   2 | One-Line-Mechanik
-   Breakpoint hart kodiert: unter 850px normales zweizeiliges Layout.
-   Zum Aendern beide @media-Werte (hier und in Block 3) anpassen.
-   Greift nur, wenn die Tab-Leiste sichtbar ist - bei mail.tabs.autoHide
-   und nur einem Tab kollabiert #tabs-toolbar, dann bleibt die Toolbar
-   in voller Breite.
+   2 | One-line mechanics
+   Breakpoint hard-coded: below 850px the normal two-row layout applies.
+   To change it, adjust both @media values (here and in block 3).
+   Only applies while the tab bar is visible - with mail.tabs.autoHide
+   and a single tab, #tabs-toolbar collapses and the toolbar stays
+   at full width.
    -------------------------------------------------------------------------- */
 @media (min-width: 850px) {
-  /* Suchfeld weg - Suche via STRG+K */
+  /* Search field removed - search via Ctrl+K */
   #unifiedToolbarContent li[item-id="search-bar"] {
     display: none !important;
   }
 
-  /* Tab-Leiste in die Unified-Toolbar-Zeile hochziehen, linke Haelfte */
+  /* Pull the tab bar up into the unified toolbar row, left half */
   #titlebar:has(> #tabs-toolbar:not([collapsed="true"])) #tabs-toolbar {
     margin-top: calc(-1 * var(--birdone-row-height)) !important;
     height: var(--birdone-row-height) !important;
@@ -45,13 +45,13 @@
     margin-inline-end: calc(100% - var(--birdone-tab-share)) !important;
   }
 
-  /* Toolbar-Zeile auf gemeinsame Hoehe bringen */
+  /* Bring the toolbar row to the shared height */
   #unifiedToolbar {
     height: var(--birdone-row-height) !important;
     padding-block: 0 !important;
   }
 
-  /* Toolbar-Inhalt nach rechts einruecken, Platz fuer die Tabs */
+  /* Indent the toolbar content to the right, making room for the tabs */
   #titlebar:has(> #tabs-toolbar:not([collapsed="true"])) #unifiedToolbarContent {
     margin-inline-start: var(--birdone-tab-share) !important;
     flex: auto !important;
@@ -60,11 +60,11 @@
 }
 
 /* --------------------------------------------------------------------------
-   3 | Zeilenumfeld
-   Breakpoint muss dem Wert in Block 2 entsprechen.
+   3 | Row surroundings
+   Breakpoint must match the value in block 2.
    -------------------------------------------------------------------------- */
 @media (min-width: 850px) {
-  /* Eine Flaeche statt zwei Leisten */
+  /* One surface instead of two bars */
   #tabs-toolbar,
   #unifiedToolbar {
     background: none !important;
@@ -73,15 +73,15 @@
 }
 
 /* --------------------------------------------------------------------------
-   4 | Akzentfarbe - von der Windows-Akzentfarbe entkoppelt
-   Thunderbird bezieht seine Akzentfarbe aus den Systemfarben AccentColor/
-   AccentColorText (Windows-Einstellung > Personalisierung > Farben). Die
-   zwei zentralen Tokens werden fest auf Amber gepinnt: --selected-item-color
-   speist Auswahl-Highlights (Ordnerliste, Nachrichtenliste), den
-   Primaerbutton ("Neue Nachricht"), Fokusrahmen und Attention-Icons;
-   --color-accent-primary die Toolkit-Widgets (Checkboxen, Fokus-Outlines).
-   Die Hover/Active-Ableitungen entstehen per color-mix aus der Basis und
-   folgen automatisch.
+   4 | Accent color - decoupled from the Windows accent color
+   Thunderbird derives its accent color from the system colors AccentColor/
+   AccentColorText (Windows Settings > Personalization > Colors). The
+   two central tokens are pinned to amber: --selected-item-color feeds
+   selection highlights (folder list, message list), the primary button
+   ("New Message"), focus rings and attention icons; --color-accent-primary
+   the toolkit widgets (checkboxes, focus outlines). The hover/active
+   derivatives are produced via color-mix from the base and follow
+   automatically.
    -------------------------------------------------------------------------- */
 :root {
   --selected-item-color: var(--birdone-accent) !important;
@@ -90,37 +90,37 @@
   --color-accent-primary-selected: var(--birdone-accent) !important;
 }
 
-/* Menueleiste (Alt-Taste): der Unterstrich eines geoeffneten Menues malt
-   AccentColor direkt am Token vorbei (toolkit menu.css). */
+/* Menu bar (Alt key): the underline of an open menu paints AccentColor
+   directly, bypassing the token (toolkit menu.css). */
 menubar > menu[open] {
   border-bottom-color: var(--birdone-accent) !important;
 }
 
 /* --------------------------------------------------------------------------
-   5 | Kontextmenues - Highlight per Schriftfarbe statt Hintergrundflaeche
-   Toolkit malt den Zeilen-Hover mit der Systemfarbe -moz-menuhover aus
-   einer :where()-Regel (Spezifitaet 0, bewusst ueberschreibbar). Stattdessen
-   transparenter Hintergrund und Amber-Text; Menue-Icons haengen ueber
-   --menuitem-icon-fill an currentColor und faerben mit. Nur im Dark Mode -
-   auf hellen Menues traegt Amber nicht.
+   5 | Context menus - highlight via text color instead of a background surface
+   Toolkit paints the row hover with the system color -moz-menuhover from
+   a :where() rule (specificity 0, deliberately overridable). Instead:
+   transparent background and amber text; menu icons are bound to
+   currentColor via --menuitem-icon-fill and take on the color. Dark mode
+   only - amber doesn't work on light menus.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   menupopup :is(menuitem, menu)[_moz-menuactive]:not([disabled]) {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
-  /* Disabled-Zeilen haben in toolkit menu.css einen eigenen Hover-Chip
-     (-moz-menuhoverdisabled); auch den entfernen. */
+  /* Disabled rows have their own hover chip in toolkit menu.css
+     (-moz-menuhoverdisabled); remove that one as well. */
   menupopup :is(menuitem, menu)[_moz-menuactive][disabled] {
     background-color: transparent !important;
   }
 
-  /* App-Menue (Hamburger) und Panel-Subviews: dritte Hover-Mechanik.
-     Die Zeilen (subviewbuttons, panelUI.css) malen ihren Chip aus der
-     --panel-background-color-dimmed-Familie und setzen color: inherit.
-     Chips ueber die Tokens aus, Amber-Text per eigener Regel; die
-     Checked-Zustaende (z.B. Dichte-Auswahl) laufen ueber
-     --selected-item-color und bleiben als Flaeche erhalten. */
+  /* App menu (hamburger) and panel subviews: a third hover mechanism.
+     The rows (subviewbuttons, panelUI.css) paint their chip from the
+     --panel-background-color-dimmed family and set color: inherit.
+     Chips turned off via the tokens, amber text via its own rule; the
+     checked states (e.g. density selection) run through
+     --selected-item-color and remain as a surface. */
   panel,
   menupopup {
     --panel-background-color-dimmed: transparent !important;
@@ -136,12 +136,12 @@ menubar > menu[open] {
   }
 }
 
-/* Innenradien: --menuitem-border-radius (Default --border-radius-xsmall)
-   rundet den Hover-Chip der Zeilen; --panel-border-radius (messenger
-   variables.css: 8px) rundet den Inhaltskasten des Popups, waehrend das
-   Popup-Fenster dahinter eckig bleibt - in der Ecke schaut sonst der graue
-   Fensterhintergrund als Dreieck durch. Beide Radien unabhaengig vom
-   Farbschema auf eckig. */
+/* Inner radii: --menuitem-border-radius (default --border-radius-xsmall)
+   rounds the row hover chip; --panel-border-radius (messenger
+   variables.css: 8px) rounds the popup's content box while the popup
+   window behind it stays square - otherwise the grey window background
+   shows through as a triangle in the corner. Both radii set to square
+   regardless of color scheme. */
 menupopup,
 panel {
   --menuitem-border-radius: 0 !important;
@@ -149,13 +149,13 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   6 | Toolbar-Icons - Hover-Feedback per Farbe statt Flaeche
-   Die Buttons der Unified Toolbar (messenger widgets.css) malen bei Hover
-   einen currentColor-Chip (--toolbar-button-hover-background-color) plus
-   Rahmen. Beides raus; stattdessen setzt --button-hover-text-color den
-   Text auf Amber, und weil die Icons mit fill/stroke: currentColor
-   gezeichnet werden, faerben sie mit. Auf die Toolbar-Klassen gescoped,
-   damit normale Dialog-Buttons ihr natives Hover behalten.
+   6 | Toolbar icons - hover feedback via color instead of a surface
+   The unified toolbar buttons (messenger widgets.css) paint a
+   currentColor chip on hover (--toolbar-button-hover-background-color)
+   plus a border. Both removed; instead --button-hover-text-color sets the
+   text to amber, and since the icons are drawn with fill/stroke:
+   currentColor they take on the color. Scoped to the toolbar classes so
+   regular dialog buttons keep their native hover.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   .button:is(.toolbar-button, .unified-toolbar-button) {
@@ -167,10 +167,10 @@ panel {
     --button-hover-text-color: var(--birdone-accent) !important;
   }
 
-  /* Flat-Buttons (Ordnerbereich "Nachrichten abrufen", Nachrichtenlisten-
-     Optionen u.a.): deren Hover-Chip ist hart kodiertes color-mix ohne
-     Token, daher direkte Regel statt Variablen-Override. Icon folgt via
-     fill/stroke: currentColor der Textfarbe. */
+  /* Flat buttons (folder pane "Get Messages", message list options
+     etc.): their hover chip is hard-coded color-mix without a token,
+     hence a direct rule instead of a variable override. The icon follows
+     the text color via fill/stroke: currentColor. */
   .button.button-flat:hover,
   .button.button-flat:hover:active {
     background-color: transparent !important;
@@ -179,13 +179,12 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   7 | "Neue Nachricht"-Button - grau in Ruhe, Amber-Look bei Hover
-   Ruhezustand: die Optik eines normalen Buttons statt der vollen
-   Amber-Flaeche des Primaerbuttons - graue Flaeche, hellerer grauer
-   Rahmen, helle Schrift (die nativen Button-Tokens). Hover/Active:
-   der 1.1-Look aus Block 8/9, Amber-Toenung plus Amber-Rahmen.
-   Bewusst nur dieser eine Button - Primaerbuttons in Dialogen behalten
-   die volle Amber-Flaeche.
+   7 | "New Message" button - grey at rest, amber look on hover
+   At rest: the look of a regular button instead of the primary button's
+   full amber surface - grey surface, lighter grey border, light text
+   (the native button tokens). Hover/active: the 1.1 look from blocks
+   8/9, amber tint plus amber border. Deliberately only this one button -
+   primary buttons in dialogs keep the full amber surface.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #folderPaneWriteMessage {
@@ -205,16 +204,16 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   8 | Nachrichtenliste - Auswahlbalken im Posteingang-Look
-   Die fokussierte selektierte Zeile malt --listbox-focused-selected-bg
-   (= --selected-item-color, seit Block 4 voll Amber) mit dunkler Schrift.
-   Stattdessen wie Block 7: Amber-Toenung, 1px Amber-Outline, helle Schrift.
-   Auf den Tabellen-Body der Nachrichtenliste gescoped; Ordnerliste und
-   nicht fokussierte Auswahl (graue Zeile) bleiben nativ.
+   8 | Message list - selection bar in inbox look
+   The focused selected row paints --listbox-focused-selected-bg
+   (= --selected-item-color, full amber since block 4) with dark text.
+   Instead, like block 7: amber tint, 1px amber outline, light text.
+   Scoped to the message list's table body; folder list and unfocused
+   selection (grey row) stay native.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
-  /* Getaggte Nachrichten ausgenommen: deren Auswahlbalken traegt die
-     Tag-Farbe (threadPane.css) und behaelt sie. */
+  /* Tagged messages excluded: their selection bar carries the tag color
+     (threadPane.css) and keeps it. */
   [is="tree-view-table-body"]:is(:focus, :focus-within) > .table-layout.selected:not([data-properties~="tagged"]),
   [is="tree-view-table-body"] > .table-layout.selected:not([data-properties~="tagged"]):focus-within {
     background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
@@ -223,35 +222,47 @@ panel {
     outline-offset: -1px !important;
   }
 
-  /* Spaltenkoepfe (Betreff, Von, Datum, ... samt Icon-Spalten und
-     Spaltenwaehler): Hover als Farbsignal statt des grauen Chips aus
-     --tree-view-header-hover-bg. Die Icon-Spalten haengen ueber ihre
-     currentColor-Mischungen mit dran und toenen amber. */
+  /* Column headers (Subject, From, Date, ... including icon columns and
+     the column picker): hover as a color signal instead of the grey chip
+     from --tree-view-header-hover-bg. The icon columns are tied in via
+     their currentColor mixes and tint amber. */
   .tree-table-cell-container button:hover,
   .tree-table-cell-container button:hover:active {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
 
-  /* Kennzeichnungs-Stern in der Zeile und im Spaltenkopf: Hover amber,
-     analog zum Stern im Nachrichten-Header (Block 9). Gesetzte Sterne
-     (flagged) behalten ihr natives Orange. */
+  /* Flag star in the row and in the column header: hover amber,
+     analogous to the star in the message header (block 9). Set stars
+     (flagged) keep their native orange. */
   tr:not([data-properties~="flagged"]) .tree-view-row-flag .tree-button-flag:hover > img,
   #flaggedColButton:hover img {
     fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
     stroke: var(--birdone-accent) !important;
   }
+
+  /* Separator line below the column headers: the sticky thead
+     (tree-listbox.css, z-index 1) draws it as an absolutely positioned
+     ::after with height 0 and 1px bottom border, without a vertical
+     anchor - its static position puts the line below the header, onto
+     the first pixel of the top row, where it paints over the top edge
+     of the selection outline above. Anchored to the header's bottom
+     edge instead: the line moves onto the header's own last pixel,
+     the row gets its pixel back. */
+  thead[is="tree-view-table-header"]::after {
+    inset-block-end: 0 !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
-   9 | Nachrichten-Header & Verfassen-Toolbar
-   Von/An-Pills: Hover als reines Farbsignal - kein Hintergrund, Amber-
-   Schrift; das Adressbuch-Icon behaelt sein Amber. Aktionsbuttons
-   (Antworten, Weiterleiten, ... sowie Senden, Verschluesselung, S/MIME
-   im Verfassen-Fenster): Hover/Offen im Look der Listen-Auswahl aus
-   Block 8 - Amber-Toenung plus Amber-Rahmen - ueber die gescopte
-   --toolbarbutton-Tokenfamilie (messenger.css), die auch die
-   zweiteiligen Menu-Buttons ("Mehr", "S/MIME") abdeckt. Ruhezustand nativ.
+   9 | Message header & compose toolbar
+   From/To pills: hover as a pure color signal - no background, amber
+   text; the address book icon keeps its amber. Action buttons
+   (Reply, Forward, ... as well as Send, encryption, S/MIME in the
+   compose window): hover/open in the look of the list selection from
+   block 8 - amber tint plus amber border - via the scoped
+   --toolbarbutton token family (messenger.css), which also covers the
+   two-part menu buttons ("More", "S/MIME"). Rest state stays native.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   .header-recipient:hover,
@@ -264,8 +275,8 @@ panel {
     stroke: var(--birdone-accent) !important;
   }
 
-  /* Kennzeichnungs-Stern: Hover amber statt heller currentColor-Umriss.
-     Der gesetzte Zustand (.flagged) behaelt sein natives Orange. */
+  /* Flag star: hover amber instead of the light currentColor outline.
+     The set state (.flagged) keeps its native orange. */
   button.email-action-flagged:not(.flagged):hover {
     fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
     stroke: var(--birdone-accent) !important;
@@ -282,17 +293,17 @@ panel {
     --toolbarbutton-active-boxshadow: none !important;
   }
 
-  /* Von-Auswahl (Identitaet) im Verfassen-Fenster: Hover im Listen-Look,
-     Amber-Rahmen plus Toenung statt grauem Rahmen auf Field-Hintergrund.
-     Der Fokus-/Offen-Zustand nutzt --toolbar-field-focus-border-color
-     (= Amber seit Block 4) und bleibt nativ. */
+  /* From selector (identity) in the compose window: hover in the list
+     look, amber border plus tint instead of a grey border on the field
+     background. The focus/open state uses --toolbar-field-focus-border-color
+     (= amber since block 4) and stays native. */
   #msgIdentity:not([disabled]):hover {
     border-color: var(--birdone-accent) !important;
     background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
   }
 
-  /* Kopie (CC) / Blindkopie (BCC): reines Farbsignal - kein Hover-Chip
-     der generischen button-Regel, Amber-Schrift. */
+  /* Cc/Bcc: pure color signal - no hover chip from the generic button
+     rule, amber text. */
   button.recipient-button:not([disabled]):hover,
   button.recipient-button:not([disabled]):hover:active {
     background-color: transparent !important;
@@ -300,10 +311,10 @@ panel {
     color: var(--birdone-accent) !important;
   }
 
-  /* Doppelpfeil "weitere Adressfelder" und Rechtschreibsprache in der
-     Statusleiste: gleiche plain-button-Mechanik, gleiches Farbsignal.
-     Der aria-expanded-Zustand ist einbezogen, damit beim geoeffneten
-     Popup nicht der graue Chip zurueckkommt. */
+  /* Double arrow "more address fields" and spell-check language in the
+     status bar: same plain-button mechanism, same color signal.
+     The aria-expanded state is included so the grey chip doesn't come
+     back while the popup is open. */
   button#extraAddressRowsMenuButton:not([disabled]):is(:hover, [aria-expanded="true"]),
   button#languageStatusButton:not([disabled]):is(:hover, [aria-expanded="true"]) {
     background-color: transparent !important;
@@ -312,8 +323,8 @@ panel {
     box-shadow: none !important;
   }
 
-  /* Formatierungsleiste: die Buttons (B, I, U, Listen, ...) lesen dieselbe
-     --toolbarbutton-Tokenfamilie wie oben. */
+  /* Formatting bar: the buttons (B, I, U, lists, ...) read the same
+     --toolbarbutton token family as above. */
   #FormatToolbar toolbarbutton.formatting-button {
     --toolbarbutton-background-color-hover: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
     --toolbarbutton-checked-background: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
@@ -324,9 +335,9 @@ panel {
     --toolbarbutton-active-boxshadow: none !important;
   }
 
-  /* Die Dropdowns (Absatzformat, Schriftart) nutzen dieselben Tokens schon
-     im RUHEzustand als Grundflaeche - Token-Override wuerde sie dauerhaft
-     einfaerben. Daher direkte Regeln nur fuer Hover und Offen. */
+  /* The dropdowns (paragraph format, font) already use the same tokens
+     as their base surface at REST - a token override would tint them
+     permanently. Hence direct rules for hover and open only. */
   #FormatToolbar menulist:not([disabled], [open="true"]):hover {
     background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
     border-color: var(--birdone-accent) !important;
@@ -338,14 +349,14 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   10 | Fensterknoepfe (Minimieren/Maximieren/Schliessen)
-   Thunderbird malt die Knoepfe selbst (messenger.css): Hover ist ein
-   grauer Block, Schliessen ein roter. Stattdessen das BirdOne-Muster -
-   kein Block, die Glyphe selbst nimmt die Farbe. Minimieren/Maximieren
-   hovern amber; Schliessen hovert im Windows-Schliessrot, Konvention
-   schlaegt Theme. Die Glyphen sind Segoe-Fluent-Schriftzeichen (::before,
-   content), keine SVGs - color genuegt, kein fill/stroke-Binding noetig.
-   Gilt fuer alle Chrome-Fenster (Hauptfenster, Verfassen, ...).
+   10 | Window buttons (minimize/maximize/close)
+   Thunderbird paints the buttons itself (messenger.css): hover is a
+   grey block, close a red one. Instead the BirdOne pattern -
+   no block, the glyph itself takes the color. Minimize/maximize
+   hover amber; close hovers in the Windows close red, convention
+   beats theme. The glyphs are Segoe Fluent font characters (::before,
+   content), not SVGs - color suffices, no fill/stroke binding needed.
+   Applies to all chrome windows (main window, compose, ...).
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   .titlebar-button:hover,
@@ -355,18 +366,18 @@ panel {
   }
   .titlebar-close:hover,
   .titlebar-close:hover:active {
-    color: #e81123 !important; /* Windows-Schliessrot - BirdOne hat kein Rot-Token */
+    color: #e81123 !important; /* Windows close red - BirdOne has no red token */
   }
 }
 
 /* --------------------------------------------------------------------------
-   11 | Nachrichtenliste - grau statt schwarz
-   Die Nachrichtenliste malt ihren Hintergrund aus --tree-view-bg, im Dark
-   Mode pures Schwarz (--color-black, tree-listbox.css) - Ordner- und
-   Nachrichtenbereich daneben liegen auf --layout-background-1 (#27272a).
-   Token auf dasselbe Grau pinnen; die abgeleiteten Hover/Auswahl-Mischungen
-   (color-mix ueber --tree-view-bg) folgen automatisch. --tree-pane-background
-   ist das Pendant der Kartenansicht und zieht mit.
+   11 | Message list - grey instead of black
+   The message list paints its background from --tree-view-bg, pure black
+   in dark mode (--color-black, tree-listbox.css) - the folder and
+   message panes next to it sit on --layout-background-1 (#27272a).
+   Pin the token to the same grey; the derived hover/selection mixes
+   (color-mix over --tree-view-bg) follow automatically.
+   --tree-pane-background is the card view's counterpart and comes along.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -376,29 +387,29 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   12 | Separatorlinie unter der Titelzeile
-   Die Linie existiert nativ (unified-toolbar, border-block-end 1px), ist
-   aber rgba(0,0,0,0.15) - im Dark Mode unsichtbar. Umgefaerbt auf
-   --sidebar-border, dasselbe Token wie die Pane-Splitter darunter; nur
-   die Farbe, keine neue Geometrie. Der aktive Tab nimmt sich selbst aus:
-   die hochgezogene Tab-Leiste ueberlappt die Borderzone um 1px, die opake
-   Flaeche des aktiven Tabs (.tab-background) deckt die Linie dort ab -
-   Browser-Verhalten, Tab und Inhalt bleiben verbunden.
+   12 | Separator line below the title row
+   The line exists natively (unified-toolbar, border-block-end 1px) but
+   is rgba(0,0,0,0.15) - invisible in dark mode. Recolored to
+   --sidebar-border, the same token as the pane splitters below; color
+   only, no new geometry. The active tab exempts itself: the raised tab
+   bar overlaps the border zone by 1px, and the active tab's opaque
+   surface (.tab-background) covers the line there -
+   browser behavior, tab and content stay connected.
    -------------------------------------------------------------------------- */
 unified-toolbar {
   border-block-end-color: var(--sidebar-border) !important;
 }
 
 /* --------------------------------------------------------------------------
-   13 | Lesebereich (Nachrichtenvorschau rechts) - festes Grau
-   Der aeussere Kasten #messagepanebox traegt --layout-background-1 (#27272a).
-   Die Nachrichtenansicht darin (#singleMessage, #attachmentView) schaltet bei
-   aktivem Theme per :root[lwt-tree] auf --toolbar-background-color um
-   (messageHeader.css) - im Dark Mode ein nahezu schwarzes Grau, spuerbar
-   dunkler als die Panes daneben. Alle drei fest auf --birdone-surface;
-   userChrome ist User-Origin, das !important schlaegt den Author-Override
-   ohne Spezifitaetsakrobatik. Der Mail-Body selbst ist ein Content-Dokument
-   und laeuft ueber userContent.css.
+   13 | Reading pane (message preview on the right) - fixed grey
+   The outer box #messagepanebox carries --layout-background-1 (#27272a).
+   The message view inside it (#singleMessage, #attachmentView) switches
+   to --toolbar-background-color via :root[lwt-tree] when a theme is
+   active (messageHeader.css) - in dark mode a nearly black grey,
+   noticeably darker than the neighboring panes. All three pinned to
+   --birdone-surface; userChrome is user origin, the !important beats the
+   author override without specificity acrobatics. The mail body itself
+   is a content document and runs through userContent.css.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #messagepanebox,
@@ -409,14 +420,14 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   14 | Ordnerliste & Nachrichtenliste - Flaechengrau vereinheitlicht
-   Beide Panes liegen auf --layout-background-1, im Dark Mode #27272a
-   (--color-gray-80) - einen Hauch dunkler als der Lesebereich aus Block 13.
-   Das Token an der Wurzel auf --birdone-surface gepinnt: die Ordnerliste
-   zieht direkt mit, die Nachrichtenliste ueber die Kette aus Block 11
-   (--tree-view-bg -> --layout-background-1), und die abgeleiteten
-   Hover/Auswahl-Mischungen folgen automatisch. Alle uebrigen Flaechen auf
-   diesem Token wandern mit - gewollt, eine Flaeche statt zwei Grautoene.
+   14 | Folder list & message list - surface grey unified
+   Both panes sit on --layout-background-1, #27272a in dark mode
+   (--color-gray-80) - a touch darker than the reading pane from block 13.
+   The token pinned to --birdone-surface at the root: the folder list
+   follows directly, the message list via the chain from block 11
+   (--tree-view-bg -> --layout-background-1), and the derived
+   hover/selection mixes follow automatically. All other surfaces on
+   this token move along - intentional, one surface instead of two greys.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -425,17 +436,18 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   15 | Verfassen-Fenster - Adress- und Betreff-Felder auf Flaechengrau
-   Die Eingabefelder (An/Kopie/Blindkopie: .address-container, Betreff:
-   #msgSubject) malen ihren Hintergrund je nach Theme-Zustand aus zwei
-   Quellen (messengercompose.css): unter :root[lwt-tree] aus
-   --toolbar-field-background-color, sonst aus der Systemfarbe Field - im
-   Dark Mode nahezu schwarz. Ein Token-Override deckte nur den ersten Pfad
-   ab und blieb wirkungslos; stattdessen die Flaeche direkt am Feld
-   gepinnt, das schlaegt beide Malwege. Nimmt auch den Fokus-Hintergrund
-   mit (nativ je nach Pfad -focus-Token oder Field) - gewollt, eine
-   Flaeche in Ruhe wie im Fokus; der Amber-Fokusrahmen (Block 4) bleibt.
-   Der Editor-Body darunter ist ein Content-Dokument -> userContent.css.
+   15 | Compose window - address and subject fields on surface grey
+   The input fields (To/Cc/Bcc: .address-container, subject:
+   #msgSubject) paint their background from two sources depending on
+   theme state (messengercompose.css): under :root[lwt-tree] from
+   --toolbar-field-background-color, otherwise from the system color
+   Field - nearly black in dark mode. A token override only covered the
+   first path and had no effect; instead the surface is pinned directly
+   on the field, which beats both paint paths. Also takes the focus
+   background along (natively the -focus token or Field depending on the
+   path) - intentional, one surface at rest and in focus; the amber
+   focus ring (block 4) remains. The editor body below is a content
+   document -> userContent.css.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #MsgHeadersToolbar .address-container,
@@ -445,16 +457,16 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   16 | Verfassen-Fenster - Umschlagbereich & Formatierungsleiste
-   Die Flaechen um die Felder herum: der Umschlagbereich (Von/An/Betreff,
-   #MsgHeadersToolbar) und die Formatierungsleiste (#FormatToolbox mit
-   #FormatToolbar darin). messengercompose.css malt beide unter
-   :root[lwt-tree] aus --toolbar-background-color (!important), sonst
-   greift die native Toolbar-Flaeche - wie in Block 15 direkt gepinnt,
-   das schlaegt beide Pfade; userChrome ist User-Origin, das !important
-   gewinnt auch gegen das der Author-Regel. Die Felder aus Block 15
-   liegen tongleich darauf und zeichnen sich nur noch ueber ihren
-   nativen Rahmen ab - gewollt, eine Flaeche im ganzen Fenster.
+   16 | Compose window - envelope area & formatting bar
+   The surfaces around the fields: the envelope area (From/To/Subject,
+   #MsgHeadersToolbar) and the formatting bar (#FormatToolbox with
+   #FormatToolbar inside). messengercompose.css paints both under
+   :root[lwt-tree] from --toolbar-background-color (!important),
+   otherwise the native toolbar surface applies - pinned directly as in
+   block 15, which beats both paths; userChrome is user origin, so its
+   !important also wins against the author rule's. The fields from
+   block 15 sit on top in the same tone and are only distinguished by
+   their native border - intentional, one surface across the whole window.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #MsgHeadersToolbar,
@@ -465,14 +477,14 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   17 | System-Prompts (Bestaetigen/Nachfragen) - Flaechengrau statt Blau
-   Die Prompt-Dialoge des Prompt-Service (z.B. "Nachricht im Entwurfsordner
-   speichern?" beim Schliessen des Verfassen-Fensters) sind eigene Chrome-
-   Fenster aus toolkit commonDialog.xhtml. Ihr Hintergrund kommt als
-   Systemfarbe -moz-Dialog vom UA-Sheet am Fensterroot - im Dark Mode ein
-   blaeulich getoentes Dunkelgrau, kein Thunderbird-Token. Direkt am Root
-   gepinnt; bewusst nur auf #commonDialogWindow gescoped (alert/confirm/
-   prompt), andere Dialogfenster bleiben nativ.
+   17 | System prompts (confirm/ask) - surface grey instead of blue
+   The prompt-service dialogs (e.g. "Save message in drafts folder?"
+   when closing the compose window) are separate chrome windows from
+   toolkit commonDialog.xhtml. Their background comes from the system
+   color -moz-Dialog via the UA sheet on the window root - in dark mode
+   a bluish-tinted dark grey, no Thunderbird token. Pinned directly on
+   the root; deliberately scoped to #commonDialogWindow only (alert/
+   confirm/prompt), other dialog windows stay native.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #commonDialogWindow {
@@ -481,19 +493,19 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   18 | Titel-/Toolbar-Zeilen - eigener Grauton
-   Hauptfenster: der Streifen hinter Tabs und Toolbar-Zeile ist
-   #navigation-toolbox; messenger.css malt ihn unter :root[lwtheme] aus
-   --lwt-accent-color (Theme-injiziert, nahezu schwarz), Tab-Leiste und
-   Unified Toolbar sind seit Block 3 transparent, die Farbe scheint durch.
-   Verfassen-Fenster: #compose-toolbox nutzt dieselbe Accent-Regel, seine
-   Toolbar-Zeilen (Menueleiste, Senden-Leiste) malen aber zusaetzlich
-   selbst aus --toolbar-background-color (messengercompose.css) und
-   brauchen den Pin einzeln. Direkt gepinnt statt uebers Token - das
-   Token speist auch Statusleiste und Findbar, die bleiben nativ. Deckt
-   den Inaktiv-Zustand ab (--lwt-accent-color-inactive), aktives und
-   inaktives Fenster tragen denselben Ton. Die Seitenleiste der
-   Einstellungen-Seite ist Content -> userContent.css.
+   18 | Title/toolbar rows - dedicated grey tone
+   Main window: the strip behind tabs and toolbar row is
+   #navigation-toolbox; messenger.css paints it under :root[lwtheme]
+   from --lwt-accent-color (theme-injected, nearly black); tab bar and
+   unified toolbar are transparent since block 3, so the color shines
+   through. Compose window: #compose-toolbox uses the same accent rule,
+   but its toolbar rows (menu bar, send bar) additionally paint
+   themselves from --toolbar-background-color (messengercompose.css) and
+   need pinning individually. Pinned directly instead of via the token -
+   the token also feeds the status bar and findbar, which stay native.
+   Covers the inactive state (--lwt-accent-color-inactive); active and
+   inactive windows carry the same tone. The settings page's sidebar
+   is content -> userContent.css.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #navigation-toolbox,
@@ -504,18 +516,18 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   19 | App-Menue (Hamburger) - Menuegrau statt Schwarz
-   Die Kontextmenues (menupopup) malen ihre Flaeche aus der Systemfarbe
-   Menu (toolkit popup.css) - das neutrale Dunkelgrau der Windows-Menues.
-   Das App-Menue ist dagegen ein Arrow-Panel, dessen Flaeche ueber
-   --panel-background-color laeuft und im Dark Mode nahezu schwarz
-   ankommt. Beide Token-Namen am Panel gepinnt (toolkit konsumiert je
-   nach Pfad --panel-background-color oder --arrowpanel-background),
-   damit das App-Menue zu den Kontextmenues passt. Wert als eigener
-   Knopf, weil er bewusst neben Surface und Titelzeile liegt.
-   Hinweis Start-Blitz: der blaue Erstpaint des Fensters kommt vom
-   Widget-Code vor jeder CSS-Anwendung - ein Root-Pin aendert daran
-   nichts (getestet), das bleibt.
+   19 | App menu (hamburger) - menu grey instead of black
+   The context menus (menupopup) paint their surface from the system
+   color Menu (toolkit popup.css) - the neutral dark grey of Windows
+   menus. The app menu, by contrast, is an arrow panel whose surface
+   runs through --panel-background-color and arrives nearly black in
+   dark mode. Both token names pinned on the panel (toolkit consumes
+   --panel-background-color or --arrowpanel-background depending on the
+   path) so the app menu matches the context menus. Value as its own
+   knob because it deliberately sits between surface and title bar.
+   Note on the startup flash: the window's blue first paint comes from
+   the widget code before any CSS is applied - a root pin doesn't
+   change that (tested), it stays.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #appMenu-popup {
@@ -525,14 +537,14 @@ unified-toolbar {
 }
 
 /* --------------------------------------------------------------------------
-   20 | Schnellfilter-Suchfeld - Titelzeilen-Grau statt Layout-Schwarz
-   Das Feld "Nachrichten filtern" (#qfb-qs-textbox, about:3pane) ist ein
-   search-bar-Custom-Element; seine Flaeche liest im Shadow DOM
-   --search-bar-background bzw. --search-bar-focus-background, beide
-   zeigen per variables.css auf --layout-background-0 (im Dark Mode
-   #18181b). Beide Tokens am Host gepinnt - Custom Properties erben in
-   den Shadow DOM hinein; Ruhe und Fokus tragen wie nativ denselben Ton,
-   der Amber-Fokusrahmen bleibt.
+   20 | Quick filter search field - title bar grey instead of layout black
+   The "Filter messages" field (#qfb-qs-textbox, about:3pane) is a
+   search-bar custom element; its surface reads
+   --search-bar-background and --search-bar-focus-background in the
+   shadow DOM, both pointing via variables.css to --layout-background-0
+   (#18181b in dark mode). Both tokens pinned on the host - custom
+   properties inherit into the shadow DOM; rest and focus carry the same
+   tone as natively, the amber focus ring remains.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   #qfb-qs-textbox {

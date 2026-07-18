@@ -1,24 +1,24 @@
 /*==============================================================================================*
 
-  BirdOne 1.4 – Begleitblatt fuer Nachrichteninhalt
+  BirdOne 1.4 – Companion sheet for message content
   https://github.com/Firnschnee/BirdOne
-  Faerbt Mail-Body und Compose-Editor (Content-Dokumente), die userChrome.css nicht erreicht.
+  Colors the mail body and compose editor (content documents), which userChrome.css cannot reach.
   Tested: Thunderbird 152 (Supernova UI, 115+)
   MIT License
 
 *==============================================================================================*/
 
 /* --------------------------------------------------------------------------
-   Lesebereich - Dark-Reader-Hintergrund
-   Bei aktivem mail.dark-reader.enabled faerbt Thunderbird den geoeffneten
-   Mail-Body im Dark Mode selbst um: messageBody.css setzt den html-Hintergrund
-   auf --color-gray-90 (#18181b), spuerbar dunkler als die Panes daneben. Das
-   Token nur fuers Content-Dokument auf #282828 umlegen; die Header-Teile
-   (--color-gray-70/-80) bleiben unberuehrt. userContent ist User-Origin, das
-   !important schlaegt den eingespeisten Author-Wert ohne Spezifitaetsakrobatik.
-   Ergaenzt Block 13/14 in userChrome.css (gleicher Wert wie --birdone-surface;
-   Content-Dokumente sehen die Chrome-Variable nicht, daher hier als Hex -
-   beim Anpassen beide Stellen aendern).
+   Reading pane - dark reader background
+   With mail.dark-reader.enabled active, Thunderbird recolors the opened
+   mail body in dark mode itself: messageBody.css sets the html background
+   to --color-gray-90 (#18181b), noticeably darker than the neighboring
+   panes. Remap the token to #282828 for the content document only; the
+   header parts (--color-gray-70/-80) stay untouched. userContent is
+   user origin, the !important beats the injected author value without
+   specificity acrobatics. Complements blocks 13/14 in userChrome.css
+   (same value as --birdone-surface; content documents don't see the
+   chrome variable, hence hex here - when adjusting, change both places).
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -27,16 +27,16 @@
 }
 
 /* --------------------------------------------------------------------------
-   Verfassen-Fenster - Editor-Hintergrund
-   Der Compose-Editor ist ein eigenes Content-Dokument (about:blank im
-   <editor>-Element); editorContent.css setzt seinen Body im Dark Mode hart
-   auf #2a2a2e - kein Token, daher direkte Regel statt Variablen-Override.
-   Per @-moz-document auf about:blank gescoped, damit Nachrichten und
-   Web-Inhalte unberuehrt bleiben; url-prefix statt url, weil der Editor
-   mit src="about:blank?" laedt (messengercompose.xhtml) und der Exakt-
-   Match das Fragezeichen nicht mitnimmt. Gleicher Wert wie
-   --birdone-surface (Hex aus demselben Grund wie oben; beim Anpassen alle
-   Stellen aendern). Felder darueber (An/Betreff): userChrome.css Block 15.
+   Compose window - editor background
+   The compose editor is its own content document (about:blank in the
+   <editor> element); editorContent.css hard-codes its body to #2a2a2e
+   in dark mode - no token, hence a direct rule instead of a variable
+   override. Scoped via @-moz-document to about:blank so messages and
+   web content stay untouched; url-prefix instead of url because the
+   editor loads with src="about:blank?" (messengercompose.xhtml) and the
+   exact match doesn't include the question mark. Same value as
+   --birdone-surface (hex for the same reason as above; when adjusting,
+   change all places). Fields above (To/Subject): userChrome.css block 15.
    -------------------------------------------------------------------------- */
 @-moz-document url-prefix("about:blank") {
   @media (prefers-color-scheme: dark) {
@@ -47,22 +47,22 @@
 }
 
 /* --------------------------------------------------------------------------
-   Einstellungen - Seitenleiste, Suchfeld, Checkboxen
-   Die Kategorienspalte von about:preferences (#pref-category-box) malt
-   aus --sidebar-background, im Dark Mode ein blaeulich getoentes
-   Dunkelgrau - auf das Titelzeilen-Grau gelegt (gleicher Wert wie
-   --birdone-titlebar in userChrome.css). Alle Feld-Wannen der Seite
-   (Textfelder, Listen wie Schlagwoerter und Dateitypen, Trees, Selects)
-   malen aus dem Toolkit-Token --background-color-box - einmal an der
-   Wurzel auf das Flaechengrau gepinnt, alles zieht mit. Die beiden
-   Suchfelder (#searchInput, #filter) sind type="search" und stehen nicht
-   in der Textbox-Regel des Toolkits, daher zusaetzlich direkt gepinnt.
-   Die Checkbox-Kaestchen zeichnet der Widget-Painter (appearance: auto,
-   non-native) an CSS vorbei - daher appearance: none mit eigener Kontur,
-   nur im ungesetzten Zustand: angehakt bleibt der native Painter samt
-   Akzentfuellung und Haken. Die Seite laeuft als Content-Dokument im
-   Tab, daher hier statt in userChrome.css; Hex aus demselben Grund wie
-   oben, beim Anpassen die jeweiligen Stellen mit aendern.
+   Settings - sidebar, search field, checkboxes
+   The category column of about:preferences (#pref-category-box) paints
+   from --sidebar-background, a bluish-tinted dark grey in dark mode -
+   placed on the title bar grey (same value as --birdone-titlebar in
+   userChrome.css). All field wells of the page (text fields, lists like
+   tags and file types, trees, selects) paint from the toolkit token
+   --background-color-box - pinned once at the root to the surface grey,
+   everything follows. The two search fields (#searchInput, #filter) are
+   type="search" and are not covered by the toolkit's textbox rule,
+   hence additionally pinned directly. The checkbox boxes are drawn by
+   the widget painter (appearance: auto, non-native), bypassing CSS -
+   hence appearance: none with its own outline, only in the unchecked
+   state: when checked, the native painter stays, including accent fill
+   and check mark. The page runs as a content document in a tab, hence
+   here instead of userChrome.css; hex for the same reason as above,
+   change the respective places along when adjusting.
    -------------------------------------------------------------------------- */
 @-moz-document url-prefix("about:preferences") {
   @media (prefers-color-scheme: dark) {
@@ -87,13 +87,13 @@
       border-radius: 2px !important;
     }
 
-    /* Ansicht-/Gruppierungs-Kacheln (Erscheinungsbild): Kachelflaeche,
-       Bildplatte und Hover malen aus den blaeulichen surface-Tokens
-       (--color-surface-subtle/-base/-border, preferences.css). Kachel auf
-       Flaechengrau, Platte auf Titelzeilen-Grau - gleiche Hierarchie wie
-       Panes auf Titelzeile im Hauptfenster; Hover als neutrale Aufhellung
-       (#2e2e2e, kein BirdOne-Token). Rahmen neutralgrau, per :not vom
-       Auswahlzustand ferngehalten - der bleibt amber. */
+    /* View/grouping tiles (Appearance): tile surface, image plate and
+       hover paint from the bluish surface tokens
+       (--color-surface-subtle/-base/-border, preferences.css). Tile on
+       surface grey, plate on title bar grey - same hierarchy as panes
+       on the title bar in the main window; hover as a neutral
+       lightening (#2e2e2e, no BirdOne token). Border neutral grey, kept
+       away from the selected state via :not - that one stays amber. */
     .appearance-options radio {
       background-color: #282828 !important;
     }
@@ -107,14 +107,14 @@
       background-color: #1f1f1f !important;
     }
 
-    /* Dropdowns: XUL-Menulists (z.B. Standardsortierung) malen ihre
-       Popup-Flaeche aus --panel-background-color, das messenger
-       variables.css an :is(menupopup, panel) auf das blaeuliche
-       --color-surface-subtle legt - am Popup selbst neu deklariert.
-       HTML-Selects (z.B. Sprache, Schriftart) rendern ihr Popup im
-       Parent-Prozess aus den berechneten Farben der option-Elemente -
-       daher dort direkt; :not(:checked) laesst der aktiven Zeile ihr
-       Akzent-Highlight. */
+    /* Dropdowns: XUL menulists (e.g. default sort order) paint their
+       popup surface from --panel-background-color, which messenger
+       variables.css sets to the bluish --color-surface-subtle at
+       :is(menupopup, panel) - redeclared on the popup itself.
+       HTML selects (e.g. language, font) render their popup in the
+       parent process from the computed colors of the option elements -
+       hence pinned there directly; :not(:checked) leaves the active
+       row its accent highlight. */
     menupopup,
     panel {
       --panel-background-color: #282828 !important;
