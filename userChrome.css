@@ -19,7 +19,7 @@
   /* --birdone-accent: #fabd2f; */      /* Accent color - replaces the Windows accent color (blocks 4-6) */
   /* --birdone-accent-text: #1a1a1a; */ /* Text on accent surfaces (e.g. the "New Message" button) */
   /* --birdone-surface: #282828; */     /* Surface grey of the panes in dark mode (blocks 13-14; userContent.css separately) */
-  /* --birdone-titlebar: #1f1f1f; */    /* Title/tab row of the main window in dark mode (block 18) */
+  --birdone-titlebar: #1f1f1f;    /* Title bar grey in dark mode (block 22; formerly also block 18) */
   /* --birdone-menu: #222222; */        /* App menu surface in dark mode, modeled on the Windows menu color (block 19) */
 }
 
@@ -641,4 +641,74 @@ unified-toolbar {
     color: var(--birdone-accent) !important;
   }
   */
+}
+
+/* --------------------------------------------------------------------------
+   22 | Message list header bar - title bar grey
+   The bar above the message list (folder name, message count, quick
+   filter toggle; #threadPaneHeaderBar in about:3pane) sits on the
+   pane surface and blends into the list below. Pinned to
+   --birdone-titlebar so it reads as chrome, not content. Dark mode
+   only, like the other surface pins.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #threadPaneHeaderBar {
+    background-color: var(--birdone-titlebar) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   23 | Message list - title bar grey instead of black
+   The list paints its background from --tree-view-bg, pure black in
+   dark mode (--color-black, tree-listbox.css). Pinned to
+   --birdone-titlebar so header bar (block 22) and list share one
+   surface; the derived hover/selection mixes (color-mix over
+   --tree-view-bg) follow automatically. --tree-pane-background is the
+   card view's counterpart and comes along.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tree-view-bg: var(--birdone-titlebar) !important;
+    --tree-pane-background: var(--birdone-titlebar) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   24 | Message list - separators invisible
+   Three line sources in tree-listbox.css: the vertical dividers
+   between the column headers are hr[is="pane-splitter"] elements
+   inside each th, painting via border-inline-end - they double as
+   the column resize handles, so they stay in the DOM and only lose
+   their paint (the accent hover feedback while resizing remains).
+   The 1px horizontal line under the header is the sticky thead's
+   ::after (the one block 8 anchors). Cell/container borders made
+   transparent as well. Geometry untouched throughout - column
+   widths and header height don't shift.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  table[is="tree-view-table"] :is(th, td),
+  table[is="tree-view-table"] .tree-table-cell-container,
+  thead[is="tree-view-table-header"]::after {
+    border-color: transparent !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   25 | Pane splitters & header bar line invisible
+   All pane splitters (folder pane, message pane, the column resize
+   handles in the list header) are hr[is="pane-splitter"] elements
+   painting a 1px border from --sidebar-border (splitter.css). Border
+   made transparent globally: the 5px grab area, the resize cursors
+   and the accent feedback on collapsed splitters (::after) all stay.
+   The line under the folder/count header bar is .list-header-bar's
+   border-block-end (--layout-border-0, threadPane.css) - color
+   cleared, the 1px stays in the layout.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  hr[is="pane-splitter"] {
+    border-color: transparent !important;
+  }
+  .list-header-bar {
+    border-block-end-color: transparent !important;
+  }
 }
