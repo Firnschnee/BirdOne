@@ -16,11 +16,11 @@
   --birdone-row-height: 34px;  /* Height of the combined row */
   --birdone-tab-inset: 42px;   /* Tab offset from the left edge (room for the Spaces button) */
 
-  --birdone-accent: #fabd2f;      /* Accent color - replaces the Windows accent color (blocks 4-6) */
-  --birdone-accent-text: #1a1a1a; /* Text on accent surfaces (e.g. the "New Message" button) */
-  --birdone-surface: #282828;     /* Surface grey of the panes in dark mode (blocks 13-14; userContent.css separately) */
-  --birdone-titlebar: #1f1f1f;    /* Title/tab row of the main window in dark mode (block 18) */
-  --birdone-menu: #222222;        /* App menu surface in dark mode, modeled on the Windows menu color (block 19) */
+  /* --birdone-accent: #fabd2f; */      /* Accent color - replaces the Windows accent color (blocks 4-6) */
+  /* --birdone-accent-text: #1a1a1a; */ /* Text on accent surfaces (e.g. the "New Message" button) */
+  /* --birdone-surface: #282828; */     /* Surface grey of the panes in dark mode (blocks 13-14; userContent.css separately) */
+  /* --birdone-titlebar: #1f1f1f; */    /* Title/tab row of the main window in dark mode (block 18) */
+  /* --birdone-menu: #222222; */        /* App menu surface in dark mode, modeled on the Windows menu color (block 19) */
 }
 
 /* --------------------------------------------------------------------------
@@ -83,18 +83,22 @@
    derivatives are produced via color-mix from the base and follow
    automatically.
    -------------------------------------------------------------------------- */
+/*
 :root {
   --selected-item-color: var(--birdone-accent) !important;
   --selected-item-text-color: var(--birdone-accent-text) !important;
   --color-accent-primary: var(--birdone-accent) !important;
   --color-accent-primary-selected: var(--birdone-accent) !important;
 }
+*/
 
 /* Menu bar (Alt key): the underline of an open menu paints AccentColor
    directly, bypassing the token (toolkit menu.css). */
+/*
 menubar > menu[open] {
   border-bottom-color: var(--birdone-accent) !important;
 }
+*/
 
 /* --------------------------------------------------------------------------
    5 | Context menus - highlight via text color instead of a background surface
@@ -105,15 +109,19 @@ menubar > menu[open] {
    only - amber doesn't work on light menus.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   menupopup :is(menuitem, menu)[_moz-menuactive]:not([disabled]) {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
+  */
   /* Disabled rows have their own hover chip in toolkit menu.css
      (-moz-menuhoverdisabled); remove that one as well. */
+  /*
   menupopup :is(menuitem, menu)[_moz-menuactive][disabled] {
     background-color: transparent !important;
   }
+  */
 
   /* App menu (hamburger) and panel subviews: a third hover mechanism.
      The rows (subviewbuttons, panelUI.css) paint their chip from the
@@ -121,6 +129,7 @@ menubar > menu[open] {
      Chips turned off via the tokens, amber text via its own rule; the
      checked states (e.g. density selection) run through
      --selected-item-color and remain as a surface. */
+  /*
   panel,
   menupopup {
     --panel-background-color-dimmed: transparent !important;
@@ -134,6 +143,7 @@ menubar > menu[open] {
     color: var(--birdone-accent) !important;
     box-shadow: none !important;
   }
+  */
 }
 
 /* Inner radii: --menuitem-border-radius (default --border-radius-xsmall)
@@ -158,6 +168,7 @@ panel {
    regular dialog buttons keep their native hover.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   .button:is(.toolbar-button, .unified-toolbar-button) {
     --toolbar-button-hover-background-color: transparent !important;
     --toolbar-button-hover-border-color: transparent !important;
@@ -166,16 +177,19 @@ panel {
     --toolbar-button-hover-checked-color: transparent !important;
     --button-hover-text-color: var(--birdone-accent) !important;
   }
+  */
 
   /* Flat buttons (folder pane "Get Messages", message list options
      etc.): their hover chip is hard-coded color-mix without a token,
      hence a direct rule instead of a variable override. The icon follows
      the text color via fill/stroke: currentColor. */
+  /*
   .button.button-flat:hover,
   .button.button-flat:hover:active {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -187,6 +201,7 @@ panel {
    primary buttons in dialogs keep the full amber surface.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #folderPaneWriteMessage {
     background-color: var(--button-background-color) !important;
     border: 1px solid var(--button-border-color) !important;
@@ -201,6 +216,7 @@ panel {
   #folderPaneWriteMessage:enabled:hover:active {
     background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -214,6 +230,7 @@ panel {
 @media (prefers-color-scheme: dark) {
   /* Tagged messages excluded: their selection bar carries the tag color
      (threadPane.css) and keeps it. */
+  /*
   [is="tree-view-table-body"]:is(:focus, :focus-within) > .table-layout.selected:not([data-properties~="tagged"]),
   [is="tree-view-table-body"] > .table-layout.selected:not([data-properties~="tagged"]):focus-within {
     background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
@@ -221,25 +238,30 @@ panel {
     outline: 1px solid var(--birdone-accent) !important;
     outline-offset: -1px !important;
   }
+  */
 
   /* Column headers (Subject, From, Date, ... including icon columns and
      the column picker): hover as a color signal instead of the grey chip
      from --tree-view-header-hover-bg. The icon columns are tied in via
      their currentColor mixes and tint amber. */
+  /*
   .tree-table-cell-container button:hover,
   .tree-table-cell-container button:hover:active {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
+  */
 
   /* Flag star in the row and in the column header: hover amber,
      analogous to the star in the message header (block 9). Set stars
      (flagged) keep their native orange. */
+  /*
   tr:not([data-properties~="flagged"]) .tree-view-row-flag .tree-button-flag:hover > img,
   #flaggedColButton:hover img {
     fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
     stroke: var(--birdone-accent) !important;
   }
+  */
 
   /* Separator line below the column headers: the sticky thead
      (tree-listbox.css, z-index 1) draws it as an absolutely positioned
@@ -265,6 +287,7 @@ panel {
    two-part menu buttons ("More", "S/MIME"). Rest state stays native.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   .header-recipient:hover,
   .header-newsgroup:hover {
     background-color: transparent !important;
@@ -274,14 +297,18 @@ panel {
     fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
     stroke: var(--birdone-accent) !important;
   }
+  */
 
   /* Flag star: hover amber instead of the light currentColor outline.
      The set state (.flagged) keeps its native orange. */
+  /*
   button.email-action-flagged:not(.flagged):hover {
     fill: color-mix(in srgb, var(--birdone-accent) 20%, transparent) !important;
     stroke: var(--birdone-accent) !important;
   }
+  */
 
+  /*
   .toolbarbutton-1.message-header-view-button,
   #composeToolbar2 .toolbarbutton-1 {
     --toolbarbutton-background-color-hover: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
@@ -292,29 +319,35 @@ panel {
     --toolbarbutton-hover-boxshadow: none !important;
     --toolbarbutton-active-boxshadow: none !important;
   }
+  */
 
   /* From selector (identity) in the compose window: hover in the list
      look, amber border plus tint instead of a grey border on the field
      background. The focus/open state uses --toolbar-field-focus-border-color
      (= amber since block 4) and stays native. */
+  /*
   #msgIdentity:not([disabled]):hover {
     border-color: var(--birdone-accent) !important;
     background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
   }
+  */
 
   /* Cc/Bcc: pure color signal - no hover chip from the generic button
      rule, amber text. */
+  /*
   button.recipient-button:not([disabled]):hover,
   button.recipient-button:not([disabled]):hover:active {
     background-color: transparent !important;
     border-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
+  */
 
   /* Double arrow "more address fields" and spell-check language in the
      status bar: same plain-button mechanism, same color signal.
      The aria-expanded state is included so the grey chip doesn't come
      back while the popup is open. */
+  /*
   button#extraAddressRowsMenuButton:not([disabled]):is(:hover, [aria-expanded="true"]),
   button#languageStatusButton:not([disabled]):is(:hover, [aria-expanded="true"]) {
     background-color: transparent !important;
@@ -322,9 +355,11 @@ panel {
     color: var(--birdone-accent) !important;
     box-shadow: none !important;
   }
+  */
 
   /* Formatting bar: the buttons (B, I, U, lists, ...) read the same
      --toolbarbutton token family as above. */
+  /*
   #FormatToolbar toolbarbutton.formatting-button {
     --toolbarbutton-background-color-hover: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
     --toolbarbutton-checked-background: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
@@ -334,10 +369,12 @@ panel {
     --toolbarbutton-hover-boxshadow: none !important;
     --toolbarbutton-active-boxshadow: none !important;
   }
+  */
 
   /* The dropdowns (paragraph format, font) already use the same tokens
      as their base surface at REST - a token override would tint them
      permanently. Hence direct rules for hover and open only. */
+  /*
   #FormatToolbar menulist:not([disabled], [open="true"]):hover {
     background-color: color-mix(in srgb, var(--birdone-accent) 15%, transparent) !important;
     border-color: var(--birdone-accent) !important;
@@ -346,6 +383,7 @@ panel {
     background-color: color-mix(in srgb, var(--birdone-accent) 25%, transparent) !important;
     border-color: var(--birdone-accent) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -359,15 +397,20 @@ panel {
    Applies to all chrome windows (main window, compose, ...).
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   .titlebar-button:hover,
   .titlebar-button:hover:active {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
+  */
+  /* Windows close red - BirdOne has no red token */
+  /*
   .titlebar-close:hover,
   .titlebar-close:hover:active {
-    color: #e81123 !important; /* Windows close red - BirdOne has no red token */
+    color: #e81123 !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -380,10 +423,12 @@ panel {
    --tree-pane-background is the card view's counterpart and comes along.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   :root {
     --tree-view-bg: var(--layout-background-1) !important;
     --tree-pane-background: var(--layout-background-1) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -391,14 +436,15 @@ panel {
    The line exists natively (unified-toolbar, border-block-end 1px) but
    is rgba(0,0,0,0.15) - invisible in dark mode. Recolored to
    --sidebar-border, the same token as the pane splitters below; color
-   only, no new geometry. The active tab exempts itself: the raised tab
-   bar overlaps the border zone by 1px, and the active tab's opaque
-   surface (.tab-background) covers the line there -
-   browser behavior, tab and content stay connected.
+   only, no new geometry. The raised tab bar overlaps the border zone
+   by 1px; since block 21 all tabs are transparent, so the line runs
+   continuously through active and inactive tabs alike.
    -------------------------------------------------------------------------- */
+/*
 unified-toolbar {
   border-block-end-color: var(--sidebar-border) !important;
 }
+*/
 
 /* --------------------------------------------------------------------------
    13 | Reading pane (message preview on the right) - fixed grey
@@ -412,11 +458,13 @@ unified-toolbar {
    is a content document and runs through userContent.css.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #messagepanebox,
   #singleMessage,
   #attachmentView {
     background-color: var(--birdone-surface) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -430,9 +478,11 @@ unified-toolbar {
    this token move along - intentional, one surface instead of two greys.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   :root {
     --layout-background-1: var(--birdone-surface) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -450,10 +500,12 @@ unified-toolbar {
    document -> userContent.css.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #MsgHeadersToolbar .address-container,
   #msgSubject {
     background-color: var(--birdone-surface) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -469,11 +521,13 @@ unified-toolbar {
    their native border - intentional, one surface across the whole window.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #MsgHeadersToolbar,
   #FormatToolbox,
   #FormatToolbar {
     background-color: var(--birdone-surface) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -487,9 +541,11 @@ unified-toolbar {
    confirm/prompt), other dialog windows stay native.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #commonDialogWindow {
     background-color: var(--birdone-surface) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -508,11 +564,13 @@ unified-toolbar {
    is content -> userContent.css.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #navigation-toolbox,
   #compose-toolbox,
   #compose-toolbox > toolbar {
     background-color: var(--birdone-titlebar) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -530,10 +588,12 @@ unified-toolbar {
    change that (tested), it stays.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #appMenu-popup {
     --panel-background-color: var(--birdone-menu) !important;
     --arrowpanel-background: var(--birdone-menu) !important;
   }
+  */
 }
 
 /* --------------------------------------------------------------------------
@@ -547,8 +607,38 @@ unified-toolbar {
    tone as natively, the amber focus ring remains.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
+  /*
   #qfb-qs-textbox {
     --search-bar-background: var(--birdone-titlebar) !important;
     --search-bar-focus-background: var(--birdone-titlebar) !important;
   }
+  */
+}
+
+/* --------------------------------------------------------------------------
+   21 | Tabs - active tab marked by amber text only
+   Natively the selected tab carries three markers (tabmail.css): the
+   2px accent line above the label (.tab-line, --tabline-color), an
+   opaque surface (.tab-background, --toolbar-background-color; under
+   lwtheme a background-image stack instead) and a drop shadow on the
+   tab itself. All three removed - the background shorthand also clears
+   the lwtheme image stack - and replaced by amber text; the tab icon
+   follows via fill/stroke: currentColor. The .tab-line element keeps
+   its 2px geometry in all states, only the paint goes, so tab height
+   doesn't shift. Inactive tabs stay as they are, including the native
+   hover feedback. Dark mode only, like blocks 5/6.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  /*
+  .tabmail-tab .tab-background[selected="true"] {
+    background: transparent !important;
+  }
+  .tab-line[selected="true"] {
+    background-color: transparent !important;
+  }
+  .tabmail-tab[selected="true"] {
+    box-shadow: none !important;
+    color: var(--birdone-accent) !important;
+  }
+  */
 }
