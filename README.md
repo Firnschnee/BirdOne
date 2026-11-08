@@ -2,7 +2,7 @@
 
 One-line layout: tabs and unified toolbar share a single row, global search hidden (use CTRL+K).
 
-> Tested on Thunderbird 155 (Supernova UI, 115+ required) on Windows.
+> Tested on Thunderbird 159 (Supernova UI, 115+ required) on Windows.
 >
 ![preview](https://github.com/Firnschnee/BirdOne/blob/main/assets/preview.png)
 
