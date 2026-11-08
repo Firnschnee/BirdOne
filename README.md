@@ -2,15 +2,15 @@
 
 One-line layout: tabs and unified toolbar share a single row, global search hidden (use CTRL+K).
 
+Palette: Thunderbird's dark greys in [FoxOne's](https://firnschnee.github.io/FoxOne/) tone, kept in Thunderbird's own lightness ratios, with an amber accent instead of the Windows accent colour.
+
 > Tested on Thunderbird 159 (Supernova UI, 115+ required) on Windows.
 >
 ![preview](https://github.com/Firnschnee/BirdOne/blob/main/assets/preview.png)
 
 BirdOne is configurable through CSS variables. See all options → [docs/customisation.md](https://firnschnee.github.io/BirdOne/customisation.html)
 
-> The repository also contains [`userContent.css`](https://github.com/Firnschnee/BirdOne/blob/main/userContent.css) for the mail body, compose editor and settings page.
-> 
-> It is **work in progress** and currently not recommended: it still applies the colour layer that `userChrome.css` no longer does. BirdOne works without it.
+> Install both files: [`userChrome.css`](https://github.com/Firnschnee/BirdOne/blob/main/userChrome.css) for the interface, [`userContent.css`](https://github.com/Firnschnee/BirdOne/blob/main/userContent.css) for the mail body, compose editor and settings page.
 
 What about Firefox?
 > You are looking for [FoxOne!](https://firnschnee.github.io/FoxOne/)

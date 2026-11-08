@@ -6,8 +6,7 @@
   Tested: Thunderbird 159 (Supernova UI, 115+)
   MIT License
 
-  WORK IN PROGRESS
-  Companion to block 27 of userChrome.css: the same grey values, applied
+  Companion to block 4 of userChrome.css: the same grey values, applied
   to Thunderbird's own content documents. Content documents cannot read
   chrome variables, hence hex here - when adjusting, change both files.
 
@@ -15,7 +14,7 @@
 
 /* --------------------------------------------------------------------------
    1 | Palette - Thunderbird's dark greys in FoxOne's tone
-   Same token swap as userChrome.css block 27, see there for the rule and
+   Same token swap as userChrome.css block 4, see there for the rule and
    the native values. The mail body in dark mode (mail.dark-reader.enabled)
    paints from --color-gray-90 (messageBody.css), so it lands on the same
    grey as the message list beside it, as natively. The settings page and
@@ -70,7 +69,7 @@
 
 /* --------------------------------------------------------------------------
    2 | Accent - amber instead of the Windows accent color
-   Same as userChrome.css block 4, for the settings page and add-on
+   Same as userChrome.css block 5, for the settings page and add-on
    manager (selected category, primary buttons, checkboxes, focus rings).
    Not applied to mail bodies, which have no accent surfaces.
    -------------------------------------------------------------------------- */
