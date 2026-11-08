@@ -51,6 +51,16 @@
     margin-inline-end: calc(100% - var(--birdone-tab-share)) !important;
   }
 
+  /* Menu bar (Alt/F10): in the DOM it sits between the unified toolbar
+     and #tabs-toolbar, so once revealed the negative margin above pulled
+     the tabs into the menu row instead of the toolbar row (issue #3).
+     #titlebar is a flex column, so order moves it behind the tab bar
+     visually: the combined row stays intact and the menu bar gets its
+     own row below it. */
+  #toolbar-menubar {
+    order: 1;
+  }
+
   /* Bring the toolbar row to the shared height */
   #unifiedToolbar {
     height: var(--birdone-row-height) !important;
