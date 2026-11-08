@@ -7,9 +7,10 @@
   MIT License
 
   WORK IN PROGRESS
-  BirdOne is being reduced to layout only. The color layer (blocks 4 to 21)
-  is commented out and kept for reference, not deleted. Only the layout
-  variables and the greys of blocks 22 to 25 are still active.
+  Color comes back as a token layer instead of element pins: block 27
+  swaps Thunderbird's dark greys for FoxOne's tone in the same lightness
+  ratios, block 4 swaps the Windows accent for amber. The old pin layer
+  (blocks 5 to 21) stays commented out for reference.
 
 *==============================================================================================*/
 
@@ -22,10 +23,10 @@
   --birdone-tab-inset: 42px;   /* Tab offset from the left edge (room for the Spaces button) */
   --birdone-attachment-height: 160px; /* Height cap of the attachment panel (block 26) */
 
-  /* --birdone-accent: #fabd2f; */      /* Accent color - replaces the Windows accent color (blocks 4-6) */
-  /* --birdone-accent-text: #1a1a1a; */ /* Text on accent surfaces (e.g. the "New Message" button) */
+  --birdone-accent: #fabd2f;      /* Accent color, FoxOne amber - replaces the Windows accent color (block 4) */
+  --birdone-accent-text: #282828; /* Text on accent surfaces (selection, "New Message" button) - FoxOne's ink on amber */
   /* --birdone-surface: #282828; */     /* Surface grey of the panes in dark mode (blocks 13-14; userContent.css separately) */
-  --birdone-titlebar: #1f1f1f;    /* Title bar grey in dark mode (block 22; formerly also block 18) */
+  --birdone-titlebar: #202020;    /* Message list header bar in dark mode (blocks 22-23) - formerly #1f1f1f, rescaled like block 27 */
   /* --birdone-menu: #222222; */        /* App menu surface in dark mode, modeled on the Windows menu color (block 19) */
 }
 
@@ -99,22 +100,18 @@
    derivatives are produced via color-mix from the base and follow
    automatically.
    -------------------------------------------------------------------------- */
-/*
 :root {
   --selected-item-color: var(--birdone-accent) !important;
   --selected-item-text-color: var(--birdone-accent-text) !important;
   --color-accent-primary: var(--birdone-accent) !important;
   --color-accent-primary-selected: var(--birdone-accent) !important;
 }
-*/
 
 /* Menu bar (Alt key): the underline of an open menu paints AccentColor
    directly, bypassing the token (toolkit menu.css). */
-/*
 menubar > menu[open] {
   border-bottom-color: var(--birdone-accent) !important;
 }
-*/
 
 /* --------------------------------------------------------------------------
    5 | Context menus - highlight via text color instead of a background surface
@@ -411,22 +408,20 @@ panel {
    beats theme. The glyphs are Segoe Fluent font characters (::before,
    content), not SVGs - color suffices, no fill/stroke binding needed.
    Applies to all chrome windows (main window, compose, ...).
+   Active again: the same model as FoxOne's window controls, so both
+   themes match. The one deliberate behavior change next to the palette.
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
-  /*
   .titlebar-button:hover,
   .titlebar-button:hover:active {
     background-color: transparent !important;
     color: var(--birdone-accent) !important;
   }
-  */
   /* Windows close red - BirdOne has no red token */
-  /*
   .titlebar-close:hover,
   .titlebar-close:hover:active {
     color: #e81123 !important;
   }
-  */
 }
 
 /* --------------------------------------------------------------------------
@@ -772,4 +767,77 @@ unified-toolbar {
   order: 5 !important;
   flex: 1 1 auto !important;
   min-height: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   27 | Palette - Thunderbird's dark greys in FoxOne's tone
+   Thunderbird draws its dark mode from two grey families: the zinc ramp
+   (--color-gray-40 to -90, colors.css), which layout.css turns into the
+   pane, sidebar and toolbar surfaces, and the Bolt surfaces
+   (--color-surface-*-dark), which feed menus and panels. Instead of
+   pinning elements (the old blocks 11 to 20), the greys themselves are
+   replaced and every surface follows, hover and selection mixes included.
+
+   Rule: FoxOne's base #282828 takes the place of gray-80, the folder pane
+   and active tab grey. Every other grey keeps its OKLCH lightness ratio to
+   gray-80 (L_new = L_native * 1.0106, the base/gray-80 lightness ratio),
+   so the hierarchy stays exactly as Thunderbird draws it: folder pane and
+   active tab on the base, list, message and tab row one step darker,
+   selection and borders lighter. Tone: like FoxOne's palette, greys up to
+   the base are neutral, lighter ones pick up Gruvbox's warmth, chroma and
+   hue interpolated along FoxOne's own steps (#282828 .. #a89984). The
+   ratios land on those steps by themselves: gray-50 comes out at #7e7166,
+   FoxOne's hover is #7c6f64.
+
+     zinc         native    BirdOne      Bolt (dark)   native    BirdOne
+     gray-90      #18181b   #191919      lower         #111113   #121212
+     gray-80      #27272a   #282828      subtle        #232326   #242424
+     gray-70      #3f3f46   #45403d      raised        #2b2b2f   #2d2c2b
+     gray-60      #52525b   #5b524d      neutral-200   #4c4d58   #554d49
+     gray-50      #71717a   #7e7166      (base, deep, border and
+     gray-40      #a1a1aa   #b1a28b       border-intense alias zinc)
+
+   Three greys bypass both families and are rescaled by the same rule:
+   the toolkit's --input-background-color (#42414d -> #48423f), the
+   system color Field (#2b2a33 -> #2c2c2b), which the compose window's
+   To/Cc and Subject fields paint directly (messengercompose.css), and the
+   system color -moz-Dialog (#23222b -> #242424), the background of the
+   prompt windows such as "Save message?" when closing a draft (toolkit
+   commonDialog.xhtml). A system color cannot be redefined, hence rules
+   on the elements themselves.
+
+   Dark mode only: in light mode the same tokens carry text colors. The
+   mail body, compose editor and settings page are content documents and
+   get the same values from userContent.css - when adjusting, change both.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-90: #191919 !important;
+    --color-gray-80: #282828 !important;
+    --color-gray-70: #45403d !important;
+    --color-gray-60: #5b524d !important;
+    --color-gray-50: #7e7166 !important;
+    --color-gray-40: #b1a28b !important;
+
+    --color-surface-base-dark: #191919 !important;
+    --color-surface-lower-dark: #121212 !important;
+    --color-surface-subtle-dark: #242424 !important;
+    --color-surface-raised-dark: #2d2c2b !important;
+    --color-surface-deep-dark: #45403d !important;
+    --color-surface-border-dark: #5b524d !important;
+    --color-surface-border-intense-dark: #7e7166 !important;
+    --color-text-muted-dark: #b1a28b !important;
+    --color-text-disabled-dark: #7e7166 !important;
+    --color-neutral-200: light-dark(#d9d9de, #554d49) !important;
+    --input-background-color: #48423f !important;
+  }
+
+  #MsgHeadersToolbar .address-container,
+  #msgSubject {
+    background-color: #2c2c2b !important;
+  }
+
+  #commonDialogWindow {
+    background-color: #242424 !important;
+  }
 }

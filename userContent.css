@@ -2,134 +2,100 @@
 
   BirdOne 1.5.1 – Companion sheet for message content
   https://github.com/Firnschnee/BirdOne
-  Colors the mail body and compose editor (content documents), which userChrome.css cannot reach.
+  Carries the palette into the mail body, compose editor and settings page (content documents), which userChrome.css cannot reach.
   Tested: Thunderbird 159 (Supernova UI, 115+)
   MIT License
 
-  WORK IN PROGRESS – CURRENTLY NOT RECOMMENDED
-  This sheet still applies the color layer that userChrome.css no longer
-  does. Installed alongside the current userChrome.css it pins mail body,
-  compose editor and the settings page to a grey the rest of the interface
-  no longer uses. BirdOne works without this file. Kept in the repository
-  while the color question is being decided.
+  WORK IN PROGRESS
+  Companion to block 27 of userChrome.css: the same grey values, applied
+  to Thunderbird's own content documents. Content documents cannot read
+  chrome variables, hence hex here - when adjusting, change both files.
 
 *==============================================================================================*/
 
 /* --------------------------------------------------------------------------
-   Reading pane - dark reader background
-   With mail.dark-reader.enabled active, Thunderbird recolors the opened
-   mail body in dark mode itself: messageBody.css sets the html background
-   to --color-gray-90 (#18181b), noticeably darker than the neighboring
-   panes. Remap the token to #282828 for the content document only; the
-   header parts (--color-gray-70/-80) stay untouched. userContent is
-   user origin, the !important beats the injected author value without
-   specificity acrobatics. Complements blocks 13/14 in userChrome.css
-   (same value as --birdone-surface; content documents don't see the
-   chrome variable, hence hex here - when adjusting, change both places).
+   1 | Palette - Thunderbird's dark greys in FoxOne's tone
+   Same token swap as userChrome.css block 27, see there for the rule and
+   the native values. The mail body in dark mode (mail.dark-reader.enabled)
+   paints from --color-gray-90 (messageBody.css), so it lands on the same
+   grey as the message list beside it, as natively. The settings page and
+   add-on manager follow through their sidebar, box and surface tokens.
+   Scoped to Thunderbird's own documents: about: pages and the message
+   URL schemes. Web pages in a tab, such as a provider's sign-in page,
+   may use the same custom property names (Tailwind 4 defines
+   --color-gray-50, for one) and stay untouched.
    -------------------------------------------------------------------------- */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-gray-90: #282828 !important;
+@-moz-document url-prefix("about:"), url-prefix("imap:"), url-prefix("mailbox:"),
+  url-prefix("news:"), url-prefix("snews:"), url-prefix("nntp:"), url-prefix("ews:") {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-gray-90: #191919 !important;
+      --color-gray-80: #282828 !important;
+      --color-gray-70: #45403d !important;
+      --color-gray-60: #5b524d !important;
+      --color-gray-50: #7e7166 !important;
+      --color-gray-40: #b1a28b !important;
+
+      --color-surface-base-dark: #191919 !important;
+      --color-surface-lower-dark: #121212 !important;
+      --color-surface-subtle-dark: #242424 !important;
+      --color-surface-raised-dark: #2d2c2b !important;
+      --color-surface-deep-dark: #45403d !important;
+      --color-surface-border-dark: #5b524d !important;
+      --color-surface-border-intense-dark: #7e7166 !important;
+      --color-text-muted-dark: #b1a28b !important;
+      --color-text-disabled-dark: #7e7166 !important;
+      --color-neutral-200: light-dark(#d9d9de, #554d49) !important;
+      --input-background-color: #48423f !important;
+    }
   }
 }
 
 /* --------------------------------------------------------------------------
-   Compose window - editor background
+   1b | Settings search fields
+   The search fields of the settings page (#searchInput, #filter in the
+   file types list) are plain type="search" inputs. They kept the toolkit's Firefox greys after the
+   token swap above: fill #42414d, border #8f8f9d (toolkit --color-gray-60,
+   a different scale than Thunderbird's tokens of the same name). Pinned
+   directly to both values run through the palette rule.
+   -------------------------------------------------------------------------- */
+@-moz-document url-prefix("about:preferences") {
+  @media (prefers-color-scheme: dark) {
+    input[type="search"] {
+      background-color: #48423f !important;
+      border-color: #9f907d !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2 | Accent - amber instead of the Windows accent color
+   Same as userChrome.css block 4, for the settings page and add-on
+   manager (selected category, primary buttons, checkboxes, focus rings).
+   Not applied to mail bodies, which have no accent surfaces.
+   -------------------------------------------------------------------------- */
+@-moz-document url-prefix("about:") {
+  :root {
+    --selected-item-color: #fabd2f !important;
+    --selected-item-text-color: #282828 !important;
+    --color-accent-primary: #fabd2f !important;
+    --color-accent-primary-selected: #fabd2f !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3 | Compose editor background
    The compose editor is its own content document (about:blank in the
-   <editor> element); editorContent.css hard-codes its body to #2a2a2e
-   in dark mode - no token, hence a direct rule instead of a variable
-   override. Scoped via @-moz-document to about:blank so messages and
-   web content stay untouched; url-prefix instead of url because the
-   editor loads with src="about:blank?" (messengercompose.xhtml) and the
-   exact match doesn't include the question mark. Same value as
-   --birdone-surface (hex for the same reason as above; when adjusting,
-   change all places). Fields above (To/Subject): userChrome.css block 15.
+   <editor> element). editorContent.css hard-codes its body to #2a2a2e in
+   dark mode, no token, hence a direct rule. The value is that grey run
+   through the same lightness rule as the palette. url-prefix instead of
+   url because the editor loads with src="about:blank?"
+   (messengercompose.xhtml), which an exact match misses.
    -------------------------------------------------------------------------- */
 @-moz-document url-prefix("about:blank") {
   @media (prefers-color-scheme: dark) {
     body {
-      background-color: #282828 !important;
-    }
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Settings - sidebar, search field, checkboxes
-   The category column of about:preferences (#pref-category-box) paints
-   from --sidebar-background, a bluish-tinted dark grey in dark mode -
-   placed on the title bar grey (same value as --birdone-titlebar in
-   userChrome.css). All field wells of the page (text fields, lists like
-   tags and file types, trees, selects) paint from the toolkit token
-   --background-color-box - pinned once at the root to the surface grey,
-   everything follows. The two search fields (#searchInput, #filter) are
-   type="search" and are not covered by the toolkit's textbox rule,
-   hence additionally pinned directly. The checkbox boxes are drawn by
-   the widget painter (appearance: auto, non-native), bypassing CSS -
-   hence appearance: none with its own outline, only in the unchecked
-   state: when checked, the native painter stays, including accent fill
-   and check mark. The page runs as a content document in a tab, hence
-   here instead of userChrome.css; hex for the same reason as above,
-   change the respective places along when adjusting.
-   -------------------------------------------------------------------------- */
-@-moz-document url-prefix("about:preferences") {
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background-color-box: #282828 !important;
-    }
-
-    #pref-category-box {
-      background-color: #1f1f1f !important;
-    }
-
-    #searchInput,
-    #filter {
-      background-color: #282828 !important;
-    }
-
-    .checkbox-check:not([checked]),
-    input[type="checkbox"]:not(:checked) {
-      appearance: none !important;
-      background-color: #282828 !important;
-      border: 1px solid var(--border-color-interactive, #8f8f9d) !important;
-      border-radius: 2px !important;
-    }
-
-    /* View/grouping tiles (Appearance): tile surface, image plate and
-       hover paint from the bluish surface tokens
-       (--color-surface-subtle/-base/-border, preferences.css). Tile on
-       surface grey, plate on title bar grey - same hierarchy as panes
-       on the title bar in the main window; hover as a neutral
-       lightening (#2e2e2e, no BirdOne token). Border neutral grey, kept
-       away from the selected state via :not - that one stays amber. */
-    .appearance-options radio {
-      background-color: #282828 !important;
-    }
-    .appearance-options radio:not([selected="true"]) {
-      border-color: #3f3f3f !important;
-    }
-    .appearance-options radio:hover {
-      background-color: #2e2e2e !important;
-    }
-    .appearance-options .radio-icon {
-      background-color: #1f1f1f !important;
-    }
-
-    /* Dropdowns: XUL menulists (e.g. default sort order) paint their
-       popup surface from --panel-background-color, which messenger
-       variables.css sets to the bluish --color-surface-subtle at
-       :is(menupopup, panel) - redeclared on the popup itself.
-       HTML selects (e.g. language, font) render their popup in the
-       parent process from the computed colors of the option elements -
-       hence pinned there directly; :not(:checked) leaves the active
-       row its accent highlight. */
-    menupopup,
-    panel {
-      --panel-background-color: #282828 !important;
-      --panel-border-color: #3f3f3f !important;
-    }
-    select,
-    option:not(:checked) {
-      background-color: #282828 !important;
+      background-color: #2c2b2a !important;
     }
   }
 }
