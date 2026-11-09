@@ -340,3 +340,27 @@ panel {
   flex: 1 1 auto !important;
   min-height: 0 !important;
 }
+
+/* --------------------------------------------------------------------------
+   13 | Pane splitters - focus ring and compose Tab order
+   Since the splitters became keyboard-resizable, pane-splitter.js gives
+   every hr[is="pane-splitter"] tabIndex 0. With nothing else styling its
+   focus, the splitter falls back to the UA outline: auto, which Gecko
+   paints in the system accent color with a white contrast line, so the
+   Windows accent comes back as a thick two-tone bar. In the compose
+   window #headersSplitter sits between the format toolbar and the
+   message body and is the next tab stop after Subject: Tab lands on the
+   splitter, not in the body. There it is taken out of focus entirely
+   (-moz-user-focus: none, honoured for HTML elements too), so Tab goes
+   from Subject straight into the body as before; dragging with the mouse
+   is unaffected. Every other splitter keeps its keyboard resize and
+   draws its focus ring in the accent instead.
+   -------------------------------------------------------------------------- */
+#headersSplitter {
+  -moz-user-focus: none !important;
+}
+
+hr[is="pane-splitter"]:focus-visible {
+  outline: 1px solid var(--birdone-accent) !important;
+  outline-offset: -1px !important;
+}
