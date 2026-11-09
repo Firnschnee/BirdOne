@@ -2,7 +2,7 @@
 
   BirdOne 2.0 – Companion sheet for message content
   https://github.com/Firnschnee/BirdOne
-  Carries the palette into the mail body, compose editor and settings page (content documents), which userChrome.css cannot reach.
+  Carries the palette into the mail body, compose editor, settings page and its dialogs (content documents), which userChrome.css cannot reach.
   Tested: Thunderbird 159 (Supernova UI, 115+)
   MIT License
 
@@ -19,13 +19,19 @@
    paints from --color-gray-90 (messageBody.css), so it lands on the same
    grey as the message list beside it, as natively. The settings page and
    add-on manager follow through their sidebar, box and surface tokens.
-   Scoped to Thunderbird's own documents: about: pages and the message
-   URL schemes. Web pages in a tab, such as a provider's sign-in page,
-   may use the same custom property names (Tailwind 4 defines
+   The dialogs the settings page, account settings and address book open
+   (Cookies, Exceptions, ...) are chrome:// documents; each gets
+   preferences/dialog.css injected, which imports Thunderbird's
+   colors.css, so they draw buttons and column headers from the same
+   tokens and are covered here too.
+   Scoped to Thunderbird's own documents: about: and chrome: pages and the
+   message URL schemes. Web pages in a tab, such as a provider's sign-in
+   page, may use the same custom property names (Tailwind 4 defines
    --color-gray-50, for one) and stay untouched.
    -------------------------------------------------------------------------- */
-@-moz-document url-prefix("about:"), url-prefix("imap:"), url-prefix("mailbox:"),
-  url-prefix("news:"), url-prefix("snews:"), url-prefix("nntp:"), url-prefix("ews:") {
+@-moz-document url-prefix("about:"), url-prefix("chrome:"), url-prefix("imap:"),
+  url-prefix("mailbox:"), url-prefix("news:"), url-prefix("snews:"),
+  url-prefix("nntp:"), url-prefix("ews:") {
   @media (prefers-color-scheme: dark) {
     :root {
       --color-gray-90: #191919 !important;
@@ -69,16 +75,69 @@
 
 /* --------------------------------------------------------------------------
    2 | Accent - amber instead of the Windows accent color
-   Same as userChrome.css block 5, for the settings page and add-on
-   manager (selected category, primary buttons, checkboxes, focus rings).
-   Not applied to mail bodies, which have no accent surfaces.
+   Same as userChrome.css block 5, for Thunderbird's own content
+   documents: settings page and add-on manager (selected category,
+   primary buttons, checkboxes), the mail body and compose editor (focus
+   ring on links), and the dialogs the settings page opens (System
+   Integration, Cookies, Certificates, ...). Those dialogs are chrome://
+   documents in a content frame, so userChrome.css misses them, and
+   several load only the toolkit tokens: AccentColor and
+   AccentColorText directly (tokens-platform.css), the hover/active
+   shades as fixed values, hence the full set here instead of the base
+   alone. accent-color recolors what Gecko draws natively, the UA focus
+   ring outline: auto among it. The XUL trees in those dialogs (cookie
+   list, certificate list) paint their selected row in SelectedItem,
+   a system color, and the focused row's outline likewise (tree.css),
+   hence the rules on the rows.
    -------------------------------------------------------------------------- */
-@-moz-document url-prefix("about:") {
+@-moz-document url-prefix("about:"), url-prefix("chrome:"), url-prefix("imap:"),
+  url-prefix("mailbox:"), url-prefix("news:"), url-prefix("snews:"),
+  url-prefix("nntp:"), url-prefix("ews:") {
   :root {
     --selected-item-color: #fabd2f !important;
     --selected-item-text-color: #282828 !important;
     --color-accent-primary: #fabd2f !important;
+    --color-accent-primary-hover: color-mix(in srgb, #fabd2f 80%, black) !important;
+    --color-accent-primary-active: color-mix(in srgb, #fabd2f 70%, black) !important;
     --color-accent-primary-selected: #fabd2f !important;
+    --button-text-color-primary: #282828 !important;
+    --button-text-color-primary-hover: #282828 !important;
+    --button-text-color-primary-active: #282828 !important;
+    --text-color-accent-primary-selected: #282828 !important;
+    accent-color: #fabd2f !important;
+  }
+
+  treechildren::-moz-tree-row(selected, focus) {
+    background-color: #fabd2f !important;
+  }
+  treechildren::-moz-tree-row(current, focus) {
+    outline-color: #fabd2f !important;
+  }
+  treechildren::-moz-tree-image(selected, focus),
+  treechildren::-moz-tree-twisty(selected, focus),
+  treechildren::-moz-tree-cell-text(selected, focus) {
+    color: #282828 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2b | Settings dialogs - surfaces
+   The same dialogs paint their background from the system color
+   -moz-Dialog (toolkit global.css) and their lists from Field
+   (tree.css), which no token swap reaches. Rescaled like userChrome.css
+   block 4: -moz-Dialog #23222b -> #242424, Field #2b2a33 -> #2c2c2b.
+   The background skips SVG roots: icons are chrome:// SVG documents
+   too, user sheets reach them, and a painted root turns every icon into
+   a filled square.
+   -------------------------------------------------------------------------- */
+@-moz-document url-prefix("chrome:") {
+  @media (prefers-color-scheme: dark) {
+    :root:not(svg) {
+      background-color: #242424 !important;
+    }
+    tree {
+      background-color: #2c2c2b !important;
+    }
   }
 }
 

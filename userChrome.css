@@ -169,13 +169,18 @@
    ("New Message"), focus rings and attention icons; --color-accent-primary
    the toolkit widgets (checkboxes, focus outlines). The hover/active
    derivatives are produced via color-mix from the base and follow
-   automatically.
+   automatically. A third path bypasses both tokens: everything Gecko
+   draws natively, above all the UA focus ring outline: auto (2px accent,
+   1px contrast line, widget/Theme.cpp) and native checkboxes. It reads
+   the CSS property accent-color, which defaults to the system accent;
+   set here, it is inherited by the whole document.
    -------------------------------------------------------------------------- */
 :root {
   --selected-item-color: var(--birdone-accent) !important;
   --selected-item-text-color: var(--birdone-accent-text) !important;
   --color-accent-primary: var(--birdone-accent) !important;
   --color-accent-primary-selected: var(--birdone-accent) !important;
+  accent-color: var(--birdone-accent) !important;
 }
 
 /* Menu bar (Alt key): the underline of an open menu paints AccentColor
@@ -342,25 +347,17 @@ panel {
 }
 
 /* --------------------------------------------------------------------------
-   13 | Pane splitters - focus ring and compose Tab order
+   13 | Compose window - Tab from Subject straight into the body
    Since the splitters became keyboard-resizable, pane-splitter.js gives
-   every hr[is="pane-splitter"] tabIndex 0. With nothing else styling its
-   focus, the splitter falls back to the UA outline: auto, which Gecko
-   paints in the system accent color with a white contrast line, so the
-   Windows accent comes back as a thick two-tone bar. In the compose
-   window #headersSplitter sits between the format toolbar and the
-   message body and is the next tab stop after Subject: Tab lands on the
-   splitter, not in the body. There it is taken out of focus entirely
-   (-moz-user-focus: none, honoured for HTML elements too), so Tab goes
-   from Subject straight into the body as before; dragging with the mouse
-   is unaffected. Every other splitter keeps its keyboard resize and
-   draws its focus ring in the accent instead.
+   every hr[is="pane-splitter"] tabIndex 0. In the compose window
+   #headersSplitter sits between the format toolbar and the message body
+   and so is the next tab stop after Subject: Tab lands on the splitter,
+   not in the body, and its focus ring (UA outline: auto, amber through
+   accent-color in block 5) draws a bar across the window. Taken out of
+   focus entirely (-moz-user-focus: none, honoured for HTML elements
+   too); dragging with the mouse is unaffected. Every other splitter
+   keeps its keyboard resize.
    -------------------------------------------------------------------------- */
 #headersSplitter {
   -moz-user-focus: none !important;
-}
-
-hr[is="pane-splitter"]:focus-visible {
-  outline: 1px solid var(--birdone-accent) !important;
-  outline-offset: -1px !important;
 }
