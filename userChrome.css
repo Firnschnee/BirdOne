@@ -24,8 +24,9 @@
   --birdone-attachment-height: 160px; /* Height cap of the attachment panel (block 12) */
 
   --birdone-accent: #fabd2f;      /* Accent color, FoxOne amber - replaces the Windows accent color (block 5) */
-  --birdone-accent-text: #282828; /* Text on accent surfaces (selection, "New Message" button) - FoxOne's ink on amber */
+  --birdone-accent-text: #282828; /* Text on accent surfaces (selection, dialog primary buttons) - FoxOne's ink on amber */
   --birdone-folder-icon: #1e180a; /* Colour of all folder icons in the folder pane (block 15) */
+  --birdone-write-button: #4b4431; /* Surface of the "New Message" button in dark mode (block 16) */
   --birdone-titlebar: #202020;    /* Message list header bar in dark mode (blocks 8-9), rescaled from #1f1f1f like block 4 */
 }
 
@@ -454,4 +455,33 @@ panel {
   > .container:not(:hover) > .icon {
   fill: transparent !important;
   stroke: transparent !important;
+}
+
+/* --------------------------------------------------------------------------
+   16 | "New Message" button - dark surface, amber accent
+   As a primary button it is the one full amber surface in the window,
+   with dark text on it (--birdone-accent-text, white on amber reads at
+   about 1.7:1). Instead it takes the look of the surroundings: a dark
+   amber-brown surface (--birdone-write-button), light text, and amber
+   only in the "+" icon and the border. Hover and press tint the surface
+   further towards amber. Dark mode only, primary buttons in dialogs
+   keep their full amber surface.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #folderPaneWriteMessage {
+    background-color: var(--birdone-write-button) !important;
+    border: 1px solid var(--birdone-accent) !important;
+    color: var(--button-text-color) !important;
+    box-shadow: none !important;
+    fill: var(--birdone-accent) !important;
+    stroke: var(--birdone-accent) !important;
+  }
+
+  #folderPaneWriteMessage:enabled:hover {
+    background-color: color-mix(in srgb, var(--birdone-accent) 15%, var(--birdone-write-button)) !important;
+  }
+
+  #folderPaneWriteMessage:enabled:hover:active {
+    background-color: color-mix(in srgb, var(--birdone-accent) 25%, var(--birdone-write-button)) !important;
+  }
 }
