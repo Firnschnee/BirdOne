@@ -432,8 +432,10 @@ panel {
    or visibility: the drag-reorder markers are pseudo-elements of the same
    .icon and must stay visible. Excluded, because their icon carries
    information: account rows, tags (tag colour), busy folders (spinner)
-   and folders with an error (warning sign). The new-mail star is its own
-   element and stays visible.
+   and folders with an error (warning sign). The new-mail star on the
+   inbox is hidden as well: without the icon it floated in the gap, and
+   the amber name and unread count already mark new mail. Hidden via
+   visibility, its negative margins keep the row layout unchanged.
    -------------------------------------------------------------------------- */
 :root {
   --folder-color-inbox: var(--birdone-folder-icon) !important;
@@ -455,6 +457,10 @@ panel {
   > .container:not(:hover) > .icon {
   fill: transparent !important;
   stroke: transparent !important;
+}
+
+#folderTree .container > .new-icon {
+  visibility: hidden !important;
 }
 
 /* --------------------------------------------------------------------------
