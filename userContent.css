@@ -3,7 +3,7 @@
   BirdOne 2.0.2 – Companion sheet for message content
   https://github.com/Firnschnee/BirdOne
   Carries the palette into the mail body, compose editor, settings page and its dialogs (content documents), which userChrome.css cannot reach.
-  Tested: Thunderbird 159 (Supernova UI, 115+)
+  Tested: Thunderbird 160 (Supernova UI, 115+)
   MIT License
 
   Companion to block 4 of userChrome.css: the same grey values, applied

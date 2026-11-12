@@ -4,7 +4,7 @@ One-line layout: tabs and unified toolbar share a single row, global search hidd
 
 Palette: Thunderbird's dark greys in [FoxOne's](https://firnschnee.github.io/FoxOne/) tone, kept in Thunderbird's own lightness ratios, with an amber accent instead of the Windows accent colour.
 
-> Tested on Thunderbird 159 (Supernova UI, 115+ required) on Windows.
+> Tested on Thunderbird 160 (Supernova UI, 115+ required) on Windows.
 >
 ![preview](https://github.com/Firnschnee/BirdOne/blob/main/assets/preview.png)
 
