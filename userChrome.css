@@ -25,6 +25,7 @@
 
   --birdone-accent: #fabd2f;      /* Accent color, FoxOne amber - replaces the Windows accent color (block 5) */
   --birdone-accent-text: #282828; /* Text on accent surfaces (selection, "New Message" button) - FoxOne's ink on amber */
+  --birdone-folder-icon: #1e180a; /* Colour of all folder icons in the folder pane (block 15) */
   --birdone-titlebar: #202020;    /* Message list header bar in dark mode (blocks 8-9), rescaled from #1f1f1f like block 4 */
 }
 
@@ -191,6 +192,31 @@
    directly, bypassing the token (toolkit menu.css). */
 menubar > menu[open] {
   border-bottom-color: var(--birdone-accent) !important;
+}
+
+/* Folders with new mail: the name (--new-folder-color) and the unread
+   badge (--folderpane-unread-new-count-background) use Thunderbird's own
+   blue, not the accent tokens (about3Pane.css). Pinned to amber. White
+   digits are unreadable on amber, so the badge takes the accent ink -
+   except on a collapsed parent, where Thunderbird draws the badge as an
+   outline with accent-coloured digits. The focused selection is amber
+   itself: there name and badge are inverted so they stay visible. */
+:root {
+  --new-folder-color: var(--birdone-accent) !important;
+  --folderpane-unread-new-count-background: var(--birdone-accent) !important;
+}
+
+li.new-messages:not(.children.collapsed:has(ul > .new-messages)) > .container > .unread-count {
+  color: var(--birdone-accent-text) !important;
+}
+
+#folderTree:focus-within li.selected.new-messages > .container > .name {
+  color: currentColor !important;
+}
+
+#folderTree:focus-within li.selected.new-messages > .container > .unread-count {
+  background-color: var(--birdone-accent-text) !important;
+  color: var(--birdone-accent) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -390,4 +416,42 @@ panel {
       rgba(255, 255, 255, 0) 100%
     ) !important;
   }
+}
+
+/* --------------------------------------------------------------------------
+   15 | Folder icons - one colour, shown only on hover and selection
+   Thunderbird gives every folder type its own colour (folderColors.css:
+   inbox blue, sent green, drafts purple, spam red ...). All of them take
+   --birdone-folder-icon instead. The icon strokes in that colour and fills
+   with 20% of it, as before. Unchanged: --folder-color-warning, a colour
+   set per folder under Properties, and an account colour, which the inbox
+   takes first.
+   Folder icons stay hidden until the row is hovered, selected or a drop
+   target. Hidden by making stroke and fill transparent, not via opacity
+   or visibility: the drag-reorder markers are pseudo-elements of the same
+   .icon and must stay visible. Excluded, because their icon carries
+   information: account rows, tags (tag colour), busy folders (spinner)
+   and folders with an error (warning sign). The new-mail star is its own
+   element and stays visible.
+   -------------------------------------------------------------------------- */
+:root {
+  --folder-color-inbox: var(--birdone-folder-icon) !important;
+  --folder-color-draft: var(--birdone-folder-icon) !important;
+  --folder-color-sent: var(--birdone-folder-icon) !important;
+  --folder-color-archive: var(--birdone-folder-icon) !important;
+  --folder-color-spam: var(--birdone-folder-icon) !important;
+  --folder-color-trash: var(--birdone-folder-icon) !important;
+  --folder-color-template: var(--birdone-folder-icon) !important;
+  --folder-color-newsletter: var(--birdone-folder-icon) !important;
+  --folder-color-rss: var(--birdone-folder-icon) !important;
+  --folder-color-outbox: var(--birdone-folder-icon) !important;
+  --folder-color-folder: var(--birdone-folder-icon) !important;
+  --folder-color-folder-filter: var(--birdone-folder-icon) !important;
+  --folder-color-folder-rss: var(--birdone-folder-icon) !important;
+}
+
+#folderTree li:not(.selected, .drop-target, .tls-error, [data-server-type], [data-tag-key], [data-is-busy="true"], [data-has-error="true"])
+  > .container:not(:hover) > .icon {
+  fill: transparent !important;
+  stroke: transparent !important;
 }

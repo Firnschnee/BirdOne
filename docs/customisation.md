@@ -14,8 +14,15 @@ All knobs live at the top of `userChrome.css`:
 | `--birdone-tab-inset` | `42px` | Left offset of the tabs (keeps the spaces button clear) |
 | `--birdone-accent` | `#fabd2f` | Accent colour, replaces the Windows accent (selection, primary buttons, focus rings, active tab line) |
 | `--birdone-accent-text` | `#282828` | Text on accent surfaces |
+| `--birdone-folder-icon` | `#1e180a` | One colour for all folder icons in the folder pane, instead of Thunderbird's colour per folder type. The icons only show on hovered and selected rows, where the dark amber sits on the row like an imprint |
 | `--birdone-titlebar` | `#202020` | Grey of the message list header bar in dark mode |
 | `--birdone-attachment-height` | `160px` | Height cap of the attachment panel above the message body (`none` removes the cap) |
+
+Block 15 hides the folder icons until a row is hovered or selected. Account,
+tag, busy and error icons always stay visible. To see all folder icons all the
+time, comment out the last rule of the block and pick a lighter
+`--birdone-folder-icon`, because the dark default nearly disappears on the
+plain folder pane.
 
 Block 12 moves the attachment panel above the message body. Set
 `mailnews.attachments.display.start_expanded` to `true` in the config editor
