@@ -485,3 +485,19 @@ panel {
     background-color: color-mix(in srgb, var(--birdone-accent) 25%, var(--birdone-write-button)) !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   17 | App menu - menu grey instead of black
+   On Windows 11, Thunderbird draws arrow panels (the app menu behind the
+   hamburger button and the other toolbar popovers) as native Mica popups
+   (shared/contextMenu.css, -moz-windows-mica-popups): appearance auto,
+   background the system color Menu, which shows the near-black backdrop
+   (#0e0e0e measured). Context menus keep the BirdOne menu grey. The
+   panel background is pinned to that grey here, user !important beats
+   the author !important of the Mica rule.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  panel[type="arrow"] {
+    --panel-background-color: #222222 !important;
+  }
+}
