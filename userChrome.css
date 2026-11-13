@@ -523,3 +523,66 @@ panel {
     --panel-background-color: #222222 !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   18 | Tab close button - slides in on hover
+   FoxOne's tab X. Natively the button is a flex child at the end of
+   .tab-content (tabmail-tab.js) and reserves its width on every tab,
+   while narrow tabs lose it entirely: below mTabClipWidth tabmail sets
+   closebuttons="activetab" and hides the X on every tab but the
+   selected one (tabmail.css). Here the X becomes an overlay anchored to
+   the tab's end edge instead: no reserved width, so the label gets the
+   room back, and it exists at every tab width. At rest it is parked
+   outside the tab (the tab clips with overflow: hidden) and invisible,
+   on tab hover it slides in from the right.
+   The first tab, the mail tab, stays without an X as natively: it
+   cannot be closed. The plate is a constant chip over the label end,
+   the glyph's colour is the only interaction cue - text colour at rest,
+   amber on hover and press like the window buttons (block 6).
+   20px box with 2px padding holds the 16px icon unstretched, scale(0.75)
+   renders it at 12px. scale is part of the transform list, so it repeats
+   in every state that sets transform.
+   -------------------------------------------------------------------------- */
+#tabmail-tabs .tabmail-tab .tab-content {
+  /* anchor for the absolutely positioned X */
+  position: relative !important;
+}
+
+#tabmail-tabs .tabmail-tab:not(:first-child) .tab-close-button {
+  /* beats the closebuttons="activetab" display: none */
+  display: block !important;
+  position: absolute !important;
+  inset-inline-end: 3px !important;
+  inset-block-start: calc(50% - 10px) !important;
+  z-index: 1 !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin: 0 !important;
+  padding: 2px !important;
+  background-color: light-dark(var(--color-gray-20), var(--color-gray-70)) !important;
+  color: inherit !important;
+  border: none !important;
+  border-radius: 2px !important;
+  outline: none !important;
+  transform: translateX(200%) scale(0.75) !important;
+  opacity: 0 !important;
+  transition:
+    transform 140ms ease-out,
+    opacity 100ms ease-out !important;
+}
+
+#tabmail-tabs .tabmail-tab:not(:first-child):hover .tab-close-button {
+  opacity: 0.9 !important;
+  transform: translateX(0) scale(0.75) !important;
+}
+
+#tabmail-tabs .tabmail-tab:not(:first-child) .tab-close-button:hover {
+  opacity: 1 !important;
+  color: var(--birdone-accent) !important;
+}
+
+#tabmail-tabs .tab-close-icon {
+  display: block !important;
+}
