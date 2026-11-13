@@ -20,7 +20,10 @@ All knobs live at the top of `userChrome.css`:
 | `--birdone-attachment-height` | `160px` | Height cap of the attachment panel above the message body (`none` removes the cap) |
 
 Block 15 hides the folder icons until a row is hovered or selected. Account,
-tag, busy and error icons always stay visible. To see all folder icons all the
+tag, busy and error icons always stay visible. Account icons take
+`--birdone-accent` instead of Thunderbird's blue, and the folder icon colour
+on an amber row. An account colour picked in the account settings still
+overrides both. To see all folder icons all the
 time, comment out the last rule of the block and pick a lighter
 `--birdone-folder-icon`, because the dark default nearly disappears on the
 plain folder pane.

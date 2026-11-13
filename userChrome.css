@@ -436,6 +436,13 @@ panel {
    inbox is hidden as well: without the icon it floated in the gap, and
    the amber name and unread count already mark new mail. Hidden via
    visibility, its negative margins keep the row layout unchanged.
+   Account icons take neither variable: they colour via --primary
+   (about3Pane.css), Thunderbird's fixed blue, not the system accent.
+   Within the folder pane --primary becomes amber. An account colour set
+   in the account settings still wins, Thunderbird writes it inline as
+   --icon-color on the icon. On the focused selection and as a drop target
+   the row is amber itself, there the account icon takes the folder icon
+   imprint.
    -------------------------------------------------------------------------- */
 :root {
   --folder-color-inbox: var(--birdone-folder-icon) !important;
@@ -451,6 +458,15 @@ panel {
   --folder-color-folder: var(--birdone-folder-icon) !important;
   --folder-color-folder-filter: var(--birdone-folder-icon) !important;
   --folder-color-folder-rss: var(--birdone-folder-icon) !important;
+}
+
+#folderTree {
+  --primary: var(--birdone-accent) !important;
+}
+
+#folderTree:focus-within li.selected[data-server-type] > .container > .icon,
+#folderTree li.drop-target[data-server-type] > .container > .icon {
+  --primary: var(--birdone-folder-icon) !important;
 }
 
 #folderTree li:not(.selected, .drop-target, .tls-error, [data-server-type], [data-tag-key], [data-is-busy="true"], [data-has-error="true"])
