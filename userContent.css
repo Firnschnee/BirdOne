@@ -157,3 +157,135 @@
     }
   }
 }
+
+/* --------------------------------------------------------------------------
+   4 | PDF viewer - pdf.js in FoxOne's tone
+   PDFs open in a tab in Thunderbird's bundled pdf.js. The viewer keeps
+   Firefox's Photon greys, which carry a blue-violet cast (toolbar
+   #38383d, page canvas #2a2a2e, menus #23222b ...), and its blues and
+   cyans for progress, focus and the find bar. The text selection paints
+   AccentColor directly, the Windows accent. Thunderbird leaves
+   browser.nova.enabled unset, so the viewer runs its pre-Nova design:
+   FoxOne's pdf.js block (Nova tokens) does not carry over.
+   The viewer document carries the PDF's own URL (imap:, mailbox:,
+   file: ...), so it is scoped on the root attribute viewer.html sets,
+   mozdisallowselectionprint, not on a URL. pdf.js imports the toolkit
+   tokens (pdfjs.enableNova defaults to true), and many of its variables
+   read a token first and fall back to a fixed value: setting the tokens
+   reaches those wherever they are declared. Variables pdf.js declares
+   on an element with a fixed value lose to an inherited one, so they are
+   overridden on that element. Greys run through the palette rule of
+   userChrome.css block 4, where the value already exists elsewhere it is
+   reused (#2c2b2a as in block 3, #9f907d as in block 1b). Accent amber in
+   both color schemes like block 2, greys dark mode only.
+   -------------------------------------------------------------------------- */
+html[mozdisallowselectionprint] {
+  --color-accent-primary: #fabd2f !important;
+  --color-accent-primary-hover: color-mix(in srgb, #fabd2f 80%, black) !important;
+  --color-accent-primary-active: color-mix(in srgb, #fabd2f 70%, black) !important;
+  --color-accent-primary-selected: #fabd2f !important;
+  --focus-outline-color: #fabd2f !important;
+  --link-color: #fabd2f !important;
+  --link-color-hover: color-mix(in srgb, #fabd2f 80%, black) !important;
+  --button-background-color-primary: #fabd2f !important;
+  --button-background-color-primary-hover: color-mix(in srgb, #fabd2f 80%, black) !important;
+  --button-background-color-primary-active: color-mix(in srgb, #fabd2f 70%, black) !important;
+  --button-text-color-primary: #282828 !important;
+  --outline-color: #fabd2f !important;
+  --progressBar-color: #fabd2f !important;
+  accent-color: #fabd2f !important;
+}
+
+/* Text selection: the text layer is transparent text over the rendered
+   page, so the fill must stay translucent, like the original. Find bar
+   matches: magenta and green natively, amber in two strengths here. */
+html[mozdisallowselectionprint] .textLayer ::selection {
+  background: color-mix(in srgb, #fabd2f, transparent 50%) !important;
+}
+
+html[mozdisallowselectionprint] .textLayer .highlight {
+  --highlight-bg-color: color-mix(in srgb, #fabd2f, transparent 75%) !important;
+  --highlight-selected-bg-color: color-mix(in srgb, #fabd2f, transparent 50%) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[mozdisallowselectionprint] {
+    /* tokens: dialogs, menus, sidebar, signature fields */
+    --background-color-canvas: #1d1d1d !important;
+    --background-color-box: #242424 !important;
+    --background-color-box-info: #2c2c2b !important;
+    --border-color-interactive: #9f907d !important;
+
+    /* viewer: page canvas, toolbars, fields, doorhangers, scrollbars */
+    --body-bg-color: #2c2b2a !important;
+    --toolbar-bg-color: #3d3936 !important;
+    --sidebar-toolbar-bg-color: #353231 !important;
+    --sidebar-narrow-bg-color: rgb(44 43 42 / 0.9) !important;
+    --toolbar-border-color: #0c0c0c !important;
+    --dropdown-btn-bg-color: #514a46 !important;
+    --field-bg-color: #46403d !important;
+    --field-border-color: #7f7267 !important;
+    --doorhanger-bg-color: #48423f !important;
+    --doorhanger-border-color: #282828 !important;
+    --doorhanger-separator-color: #665c54 !important;
+    --scrollbar-color: #86786b !important;
+    --scrollbar-bg-color: #242424 !important;
+    --progressBar-bg-color: #292929 !important;
+    --progressBar-blend-color: color-mix(in srgb, #fabd2f 40%, #292929) !important;
+  }
+
+  /* Thumbnail sidebar */
+  html[mozdisallowselectionprint] #viewsManager {
+    --sidebar-bg-color: rgb(72 66 63 / 0.92) !important;
+    --header-bg: #48423f !important;
+    --image-border-color: #3f3a38 !important;
+    --image-hover-border-color: #d0c0ab !important;
+    --image-page-number-bg: #48423f !important;
+    --image-current-page-number-fg: #282828 !important;
+    --status-undo-bg: rgb(250 189 47 / 0.08) !important;
+    --image-dragging-placeholder-bg: rgb(250 189 47 / 0.08) !important;
+  }
+
+  /* Dialogs: password, document properties, alt text */
+  html[mozdisallowselectionprint] .dialog {
+    --separator-color: #5b534d !important;
+    --text-secondary-color: #e0d1ba !important;
+    --textarea-bg-color: #48423f !important;
+    --input-text-bg-color: #48423f !important;
+  }
+
+  /* Floating editor toolbar under a selection or a selected annotation */
+  html[mozdisallowselectionprint] .editToolbar {
+    --editor-toolbar-bg-color: #2c2c2b !important;
+    --editor-toolbar-hover-bg-color: #5b534d !important;
+  }
+
+  /* "Undo" bar after deleting an annotation: dark blue natively, the
+     dark amber-brown of the "New Message" button here */
+  html[mozdisallowselectionprint] #editorUndoBar {
+    --message-bar-bg-color: #4b4431 !important;
+    --message-bar-icon-color: #fabd2f !important;
+  }
+
+  /* Comments on annotations */
+  html[mozdisallowselectionprint] .commentPopup {
+    --comment-bg-color: #1d1d1d !important;
+    --comment-hover-bg-color: #2e2d2c !important;
+    --comment-active-bg-color: #3f3a38 !important;
+    --comment-border-color: #5b534d !important;
+    --divider-color: #3f3a38 !important;
+    --button-comment-hover-bg: #5b534d !important;
+    --button-comment-active-bg: #655c54 !important;
+    --comment-count-bg-color: #4b4431 !important;
+    --comment-indicator-active-fg-color: #fabd2f !important;
+  }
+
+  html[mozdisallowselectionprint] .annotationCommentButton {
+    --comment-button-active-bg: #fabd2f !important;
+    --comment-button-focus-border-color: #3f3a38 !important;
+  }
+
+  html[mozdisallowselectionprint] .colorPicker {
+    --selected-outline-color: #fabd2f !important;
+  }
+}

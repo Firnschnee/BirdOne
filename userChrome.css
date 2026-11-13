@@ -120,7 +120,9 @@
    Three greys bypass both families and are rescaled by the same rule:
    the toolkit's --input-background-color (#42414d -> #48423f), the
    system color Field (#2b2a33 -> #2c2c2b), which the compose window's
-   To/Cc and Subject fields paint directly (messengercompose.css), and the
+   To/Cc and Subject fields paint directly (messengercompose.css), as do
+   the .themeableSearchBox fields, among them the address field of
+   content tabs such as an opened PDF (searchBox.css), and the
    system color -moz-Dialog (#23222b -> #242424), the background of the
    prompt windows such as "Save message?" when closing a draft (toolkit
    commonDialog.xhtml) and of the themeable dialogs such as the send
@@ -155,7 +157,8 @@
   }
 
   #MsgHeadersToolbar .address-container,
-  #msgSubject {
+  #msgSubject,
+  .themeableSearchBox {
     background-color: #2c2c2b !important;
   }
 
