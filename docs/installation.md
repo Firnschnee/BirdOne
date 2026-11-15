@@ -7,7 +7,7 @@ title: Installation
 
 ### 1. Download
 
-Download [`userChrome.css`](https://github.com/Firnschnee/BirdOne/blob/main/userChrome.css)
+Download [`userChrome.css`](https://github.com/Firnschnee/BirdOne/blob/main/userChrome.css) and [`userContent.css`](https://github.com/Firnschnee/BirdOne/blob/main/userContent.css)
 
 ### 2. Enable custom stylesheets
 
