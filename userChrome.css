@@ -127,7 +127,12 @@
    prompt windows such as "Save message?" when closing a draft (toolkit
    commonDialog.xhtml) and of the themeable dialogs such as the send
    progress window (themeableDialog.css paints their dialog element with
-   it, the document root behind gets the same value). A system color
+   it, the document root behind gets the same value). The compose window
+   paints it too: on #composeContentBox, which shows through the
+   transparent header row of the attachment panel, and on the header and
+   browser of the contacts sidebar (messengercompose.css). The sidebar's
+   own document paints its root with it as well (abContactsPanel.css),
+   and its buttons lay a translucent grey over that root. A system color
    cannot be redefined, hence rules on the elements themselves.
 
    Dark mode only: in light mode the same tokens carry text colors. The
@@ -164,7 +169,11 @@
 
   #commonDialogWindow,
   :root[lwtheme]:not([lwt-tree]) dialog,
-  :root:has(> body > dialog) {
+  :root:has(> body > dialog),
+  #composeContentBox,
+  #contactsSidebar .sidebar-header,
+  #contactsBrowser,
+  #abContactsPanel:not([lwt-tree]) {
     background-color: #242424 !important;
   }
 }
