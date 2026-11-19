@@ -135,6 +135,32 @@
    and its buttons lay a translucent grey over that root. A system color
    cannot be redefined, hence rules on the elements themselves.
 
+   A fourth family: the column headers of the XUL trees, among them the
+   calendar's event list and the task list as well as the filter, search
+   and address book search dialogs, paint -moz-ColHeader and its hover
+   and active variants (toolkit tree.css). The header gets Field's
+   rescaled value, hover and press the steps the message list header
+   uses (--tree-view-header-hover-bg and -hover-active-bg,
+   tree-listbox.css). Below the header, the trees themselves paint Field
+   (toolkit tree.css) unless a stylesheet sets their surface. The task
+   list does (--layout-background-0, calendar-task-view.css), the
+   calendar's event list does not, so it takes the task list's surface.
+
+   The event and task dialogs embed their form as a separate document
+   (calendar-item-iframe.xhtml, root #calendar-event-dialog-inner or
+   #calendar-task-dialog-inner). Its root paints -moz-Dialog with
+   !important (calendar-event-dialog.css), and themeableDialog.css resets
+   the dialog variables there to the system colors: the text fields take
+   Field through --field-background-color, the richlist buttons and
+   --lwt-accent-color take -moz-Dialog. Root, iframe element and
+   variables get the rescaled values.
+
+   The calendar draws on a third family, Thunderbird's blue-violet ink
+   greys (--color-ink-*, colors.css). The week number pills of the month
+   view paint ink-60 (#52507c, --viewMonthWeekLabelBackground,
+   calendar-views.css) and take gray-60, the zinc step of the same
+   lightness.
+
    Dark mode only: in light mode the same tokens carry text colors. The
    mail body, compose editor and settings page are content documents and
    get the same values from userContent.css - when adjusting, change both.
@@ -159,12 +185,26 @@
     --color-text-disabled-dark: #7e7166 !important;
     --color-neutral-200: light-dark(#d9d9de, #554d49) !important;
     --input-background-color: #48423f !important;
+    --viewMonthWeekLabelBackground: var(--color-gray-60) !important;
   }
 
   #MsgHeadersToolbar .address-container,
   #msgSubject,
-  .themeableSearchBox {
+  .themeableSearchBox,
+  :is(treecol, .tree-columnpicker-button) {
     background-color: #2c2c2b !important;
+  }
+
+  :is(treecol, .tree-columnpicker-button):hover {
+    background-color: var(--color-gray-70) !important;
+  }
+
+  :is(treecol, .tree-columnpicker-button):hover:active {
+    background-color: var(--color-gray-90) !important;
+  }
+
+  #unifinder-search-results-tree {
+    background-color: var(--layout-background-0) !important;
   }
 
   #commonDialogWindow,
@@ -173,8 +213,18 @@
   #composeContentBox,
   #contactsSidebar .sidebar-header,
   #contactsBrowser,
-  #abContactsPanel:not([lwt-tree]) {
+  #abContactsPanel:not([lwt-tree]),
+  #calendar-event-dialog-inner,
+  #calendar-task-dialog-inner,
+  #calendar-item-panel-iframe {
     background-color: #242424 !important;
+  }
+
+  #calendar-event-dialog-inner,
+  #calendar-task-dialog-inner {
+    --field-background-color: #2c2c2b !important;
+    --lwt-accent-color: #242424 !important;
+    --richlist-button-background: #242424 !important;
   }
 }
 
